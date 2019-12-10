@@ -36,14 +36,15 @@ public class TankFrame extends Frame {
 	public void paint(Graphics g) {
 		System.out.println("paint");
 		g.drawRect(x, y, 50, 50);
+		x += 20;
 	}
 
 	class MyKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			System.out.println("key pressed");
-			x += 20;
-			repaint(); // 每调用一次，就会调用 paint() 方法一次，因此可以重画Frame
+			// x += 20;
+			// repaint(); // 每调用一次，就会调用 paint() 方法一次，因此可以重画Frame
 		}
 		
 		@Override
