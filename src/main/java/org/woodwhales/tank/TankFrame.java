@@ -40,22 +40,29 @@ public class TankFrame extends Frame {
 	}
 
 	class MyKeyListener extends KeyAdapter {
+		
+		// 使用标识变量记录键盘按键的情况，之后再计算方块应该移动的方向
+		boolean bL = false;
+		boolean bU = false;
+		boolean bR = false;
+		boolean bD = false;
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();
 			
 			switch (keyCode) {
 				case KeyEvent.VK_LEFT:
-					x -= 10;
+					bL = true;
 					break;
 				case KeyEvent.VK_UP:
-					y -= 10;
+					bU = true;
 					break;
 				case KeyEvent.VK_RIGHT:
-					x += 10;
+					bR = true;
 					break;
 				case KeyEvent.VK_DOWN:
-					y += 10;
+					bD = true;
 					break;
 			}
 			
@@ -65,7 +72,22 @@ public class TankFrame extends Frame {
 		
 		@Override
 		public void keyReleased(KeyEvent e) {
+			int keyCode = e.getKeyCode();
 			
+			switch (keyCode) {
+				case KeyEvent.VK_LEFT:
+					bL = false;
+					break;
+				case KeyEvent.VK_UP:
+					bU = false;
+					break;
+				case KeyEvent.VK_RIGHT:
+					bR = false;
+					break;
+				case KeyEvent.VK_DOWN:
+					bD = false;
+					break;
+			}
 		}
 	}
 }
