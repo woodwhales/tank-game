@@ -34,22 +34,38 @@ public class TankFrame extends Frame {
 	// 因此想要方框能够移动，那么就需要不停地调用paint()方法，重新画方框的位置
 	@Override
 	public void paint(Graphics g) {
-		System.out.println("paint");
+		
 		g.drawRect(x, y, 50, 50);
-		x += 20;
+		
 	}
 
 	class MyKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println("key pressed");
+			int keyCode = e.getKeyCode();
+			
+			switch (keyCode) {
+				case KeyEvent.VK_LEFT:
+					x -= 10;
+					break;
+				case KeyEvent.VK_UP:
+					y -= 10;
+					break;
+				case KeyEvent.VK_RIGHT:
+					x += 10;
+					break;
+				case KeyEvent.VK_DOWN:
+					y += 10;
+					break;
+			}
+			
 			// x += 20;
 			// repaint(); // 每调用一次，就会调用 paint() 方法一次，因此可以重画Frame
 		}
 		
 		@Override
 		public void keyReleased(KeyEvent e) {
-			System.out.println("key released");
+			
 		}
 	}
 }
