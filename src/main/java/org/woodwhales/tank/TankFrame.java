@@ -94,10 +94,17 @@ public class TankFrame extends Frame {
 		
 		// 根据键盘的按键情况，改变方向
 		private void setMainTankDir() {
-			if(bL) myTank.setDir(Dir.LEFT);
-			if(bU) myTank.setDir(Dir.UP);
-			if(bR) myTank.setDir(Dir.RIGHT);
-			if(bD) myTank.setDir(Dir.DOWN);
+			if(bL || bU || bR || bD) {
+				myTank.setMoving(true);
+				
+				if(bL) myTank.setDir(Dir.LEFT);
+				if(bU) myTank.setDir(Dir.UP);
+				if(bR) myTank.setDir(Dir.RIGHT);
+				if(bD) myTank.setDir(Dir.DOWN);
+				return;
+			}
+			
+			myTank.setMoving(false);
 		}
 	}
 }
