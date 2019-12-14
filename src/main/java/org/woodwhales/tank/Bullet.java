@@ -84,18 +84,25 @@ public class Bullet {
 			return;
 		}
 		
+		int tankX = tank.getX();
+		int tankY = tank.getY();
+		
 		//TODO 用一个rect来记录子弹的位置
 		Rectangle rectangle1 = new Rectangle(this.x, this.y, Bullet.WIDTH, Bullet.HEIGHT);
-		Rectangle rectangle2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+		Rectangle rectangle2 = new Rectangle(tankX, tankY, Tank.WIDTH, Tank.HEIGHT);
 		
 		if(rectangle1.intersects(rectangle2)) {
 			tank.die();
 			this.die();
+			
+			int eX = tankX + Tank.WIDTH/2 - Explode.WIDTH/2;
+			int eY = tankY + Tank.HEIGHT/2 - Explode.HEIGHT/2;
+			this.frame.explodes.add(new Explode(eX, eY, frame));
 		}
 	}
 
 	private void die() {
-		this.living = false;		
+		this.living = false;
 	}
 
 }

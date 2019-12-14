@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TankFrame extends Frame {
@@ -18,8 +17,7 @@ public class TankFrame extends Frame {
 
 	List<Bullet> bullets = new ArrayList<>();
 	List<Tank> tanks = new ArrayList<>();
-	Explode explode = new Explode(100, 100, this);
-	
+	List<Explode> explodes = new ArrayList<>();
 	
 	Tank myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD, this);
 
@@ -60,35 +58,29 @@ public class TankFrame extends Frame {
 	// 因此想要方框能够移动，那么就需要不停地调用paint()方法，重新画方框的位置
 	@Override
 	public void paint(Graphics g) {
-		
 		Color color = g.getColor();
 		g.setColor(Color.WHITE);
 		g.drawString("bullets size = " + bullets.size() ,10, 50);
 		g.drawString("enemies size = " + tanks.size() ,10, 60);
+		g.drawString("explodes size = " + explodes.size() ,10, 70);
 		g.setColor(color);
-		
-		explode.paint(g);
 		
 		myTank.paint(g);
 		
-		for(Iterator<Tank> iterator = tanks.iterator(); iterator.hasNext() ; ) {
-			Tank tank = iterator.next();
-			if(!tank.isLiving()) {
-				iterator.remove();
-			}
-			tank.paint(g);
+		for(int i = 0; i < tanks.size(); i++) {
+			tanks.get(i).paint(g);
 		}
 		
-		for(Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext() ; ) {
-			Bullet bullet = iterator.next();
-			if(!bullet.isLiving()) {
-				iterator.remove();
-			}
-			bullet.paint(g);
+		for(int i = 0; i < bullets.size(); i++) {
+			bullets.get(i).paint(g);
 		}
 		
-		for (int i =0;i<bullets.size(); i++) {
-			for(int j=0; j<tanks.size();j++) {
+		for (int i = 0; i < explodes.size(); i++) {
+			explodes.get(i).paint(g);
+		}
+		
+		for (int i = 0; i < bullets.size(); i++) {
+			for (int j = 0; j < tanks.size(); j++) {
 				bullets.get(i).collideWith(tanks.get(j));
 			}
 		}

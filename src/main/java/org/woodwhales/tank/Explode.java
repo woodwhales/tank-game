@@ -22,13 +22,13 @@ public class Explode {
 		this.x = x;
 		this.y = y;
 		this.frame = frame;
-		new Audio("audio/explode.wav").play();
+		new Thread(()-> new Audio("audio/explode.wav").play()).start();
 	}
 
 	public void paint(Graphics g) {
 		g.drawImage(ResourcesManager.explodes[step++], this.x, this.y, null);
 		if(step >= ResourcesManager.explodes.length) {
-			this.step = 0;
+			this.frame.explodes.remove(this);
 		}
 	}
 
