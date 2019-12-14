@@ -12,6 +12,8 @@ public class TankFrame extends Frame {
 	private static final long serialVersionUID = 1L;
 
 	int x = 200, y = 200;
+	Dir dir = Dir.RIGHT;
+	private static final int SPEED = 10;
 	
 	public TankFrame() {
 		setVisible(true);
@@ -20,13 +22,12 @@ public class TankFrame extends Frame {
 		setSize(800, 600);
 		
 		addKeyListener(new MyKeyListener());
+		
 		addWindowListener(new WindowAdapter() {
-
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
-			
 		});
 	}
 
@@ -36,6 +37,21 @@ public class TankFrame extends Frame {
 	public void paint(Graphics g) {
 		
 		g.drawRect(x, y, 50, 50);
+		
+		switch (dir) {
+			case LEFT:
+				x -= SPEED;
+				break;
+			case UP:
+				y -= SPEED;
+				break;
+			case RIGHT:
+				x += SPEED;
+				break;
+			case DOWN:
+				y += SPEED;
+				break;
+		}
 		
 	}
 
@@ -66,8 +82,7 @@ public class TankFrame extends Frame {
 					break;
 			}
 			
-			// x += 20;
-			// repaint(); // 每调用一次，就会调用 paint() 方法一次，因此可以重画Frame
+			setMainTankDir();
 		}
 		
 		@Override
@@ -88,6 +103,31 @@ public class TankFrame extends Frame {
 					bD = false;
 					break;
 			}
+			
+			setMainTankDir();
+		}
+		
+		private void setMainTankDir() {
+			if(bL) {
+				dir = Dir.LEFT;
+				return;
+			}
+			
+			if(bU) {
+				dir = Dir.UP;
+				return;
+			}
+			
+			if(bR) {
+				dir = Dir.RIGHT;
+				return;
+			}
+			
+			if(bD) {
+				dir = Dir.DOWN;
+				return;
+			}
+			
 		}
 	}
 }
