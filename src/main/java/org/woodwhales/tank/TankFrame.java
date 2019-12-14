@@ -17,8 +17,9 @@ public class TankFrame extends Frame {
 	private static final long serialVersionUID = 1L;
 
 	List<Bullet> bullets = new ArrayList<>();
+	List<Tank> tanks = new ArrayList<>();
 	
-	Tank myTank = new Tank(200, 200, Dir.RIGHT, this);
+	Tank myTank = new Tank(200, 400, Dir.RIGHT, this);
 
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 	
@@ -58,27 +59,34 @@ public class TankFrame extends Frame {
 	@Override
 	public void paint(Graphics g) {
 		
-//		Color color = g.getColor();
-//		g.setColor(Color.WHITE);
-//		g.drawString("bullets size = "+ bullets.size(), 10, 60);
-//		g.setColor(color);
+		Color color = g.getColor();
+		g.setColor(Color.WHITE);
+		g.drawString("bullets size = " + bullets.size() ,10, 50);
+		g.drawString("enemies size = " + tanks.size() ,10, 60);
+		g.setColor(color);
 		
-		// 注意这里，不要再把myTank的属性取出来，再画位置，这样破坏了面向对象的封装思想。
-		// 只有tank自己知道自己要画在哪里，因此把画笔传给这个tank，让它自己画自己应该出现的位置。
 		myTank.paint(g);
 		
-		// 实现方式1：迭代子弹，判断是否为出屏幕的，如果是表示该子弹需要移除子弹列表
-//		for (int i = 0; i < bullets.size(); i++) {
-//			bullets.get(i).paint(g);
-//		}
+		for(Iterator<Tank> iterator = tanks.iterator(); iterator.hasNext() ; ) {
+			Tank tank = iterator.next();
+			if(!tank.isLiving()) {
+				iterator.remove();
+			}
+			tank.paint(g);
+		}
 		
-		// 实现方式2：迭代子弹，判断是否为出屏幕的，如果是表示该子弹需要移除子弹列表
 		for(Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext() ; ) {
 			Bullet bullet = iterator.next();
-			if(!bullet.isLive()) {
+			if(!bullet.isLiving()) {
 				iterator.remove();
 			}
 			bullet.paint(g);
+		}
+		
+		for (int i =0;i<bullets.size(); i++) {
+			for(int j=0; j<tanks.size();j++) {
+				bullets.get(i).collideWith(tanks.get(j));
+			}
 		}
 		
 	}

@@ -20,6 +20,8 @@ public class Tank {
 	
 	public static int WIDTH = ResourcesManager.tankD.getWidth();
 	public static int HEIGHT = ResourcesManager.tankD.getHeight();
+	
+	private boolean living = true;
 
 	// tank是否为移动状态
 	private boolean moving = false;
@@ -34,6 +36,10 @@ public class Tank {
 	}
 
 	public void paint(Graphics g) {
+		if(!living) {
+			frame.tanks.remove(this);
+			return;
+		}
 		
 		switch (dir) {
 		case LEFT:
@@ -82,6 +88,10 @@ public class Tank {
 		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT;
 		
 		this.frame.bullets.add(new Bullet(bX, bY, this.dir, frame));
+	}
+
+	public void die() {
+		this.living = false;
 	}
 
 }

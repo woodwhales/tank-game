@@ -1,6 +1,7 @@
 package org.woodwhales.tank;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class Bullet {
 	
 	private TankFrame frame;
 	
-	private boolean live = true;
+	private boolean living = true;
 
 	public Bullet(int x, int y, Dir dir, TankFrame frame) {
 		this.x = x;
@@ -27,9 +28,10 @@ public class Bullet {
 	}
 
 	public void paint(Graphics g) {
-//		if(!live) {
-//			this.frame.bullets.remove(this);
-//		}
+		if(!living) {
+			frame.bullets.remove(this);
+			return;
+		}
 		
 		switch (dir) {
 		case LEFT:
@@ -66,8 +68,22 @@ public class Bullet {
 		}
 		
 		if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
-			this.live = false;
+			this.living = false;
 		}
+	}
+
+	public void collideWith(Tank tank) {
+		Rectangle rectangle1 = new Rectangle(this.x, this.y, Bullet.WIDTH, Bullet.HEIGHT);
+		Rectangle rectangle2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+		
+		if(rectangle1.intersects(rectangle2)) {
+			tank.die();
+			this.die();
+		}
+	}
+
+	private void die() {
+		this.living = false;		
 	}
 
 }
