@@ -19,11 +19,14 @@ public class Bullet {
 	private TankFrame frame;
 	
 	private boolean living = true;
+	
+	private Group group = Group.BAD;
 
-	public Bullet(int x, int y, Dir dir, TankFrame frame) {
+	public Bullet(int x, int y, Dir dir, Group group, TankFrame frame) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
+		this.group = group;
 		this.frame = frame;
 	}
 
@@ -72,7 +75,16 @@ public class Bullet {
 		}
 	}
 
+	/**
+	 * 子弹做碰撞检测
+	 * @param tank
+	 */
 	public void collideWith(Tank tank) {
+		if(this.group == tank.getGroup()) {
+			return;
+		}
+		
+		//TODO 用一个rect来记录子弹的位置
 		Rectangle rectangle1 = new Rectangle(this.x, this.y, Bullet.WIDTH, Bullet.HEIGHT);
 		Rectangle rectangle2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
 		
