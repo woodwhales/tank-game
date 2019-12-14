@@ -38,6 +38,8 @@ public class Tank {
 
 	private Rectangle rectangle;
 	
+	private FireStrategy fireStrategy;
+	
 	public Tank(int x, int y, Dir dir, Group group, TankFrame frame) {
 		this.x = x;
 		this.y = y;
@@ -45,6 +47,19 @@ public class Tank {
 		this.group = group;
 		this.frame = frame;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+		
+		String fireStrategyClass = null;
+		if(this.group == Group.GOOD) {
+			fireStrategyClass = (String) PropertiesManager.getValue("goodFS");
+		} else {
+			fireStrategyClass = (String) PropertiesManager.getValue("badFS");
+		}
+		
+		try {
+			this.fireStrategy = (FireStrategy) Class.forName(fireStrategyClass).newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void paint(Graphics g) {
@@ -120,7 +135,7 @@ public class Tank {
 		}
 		
 		if(this.group == Group.BAD && random.nextInt(100) > 95) {
-			this.fire();
+			this.fireStrategy.fire(this);
 		}
 		
 		if(this.group == Group.BAD && random.nextInt(100) > 95) {
@@ -157,12 +172,11 @@ public class Tank {
 
 	/**
 	 * 发射子弹
+	 * 方法参数：作用域安全，但是每次传参需要new，因此 FireStrategy 最好做成单例
+	 * 成员变量：该属性的作用域是整个类，导致类的结构更加复杂
 	 */
 	public void fire() {
-		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
-		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-		
-		this.frame.bullets.add(new Bullet(bX, bY, this.dir, this.group, frame));
+		fireStrategy.fire(this);
 	}
 
 	public void die() {

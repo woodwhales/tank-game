@@ -10,6 +10,7 @@ public class ResourcesManager {
 	public static BufferedImage badTankL, badTankU, badTankR, badTankD;
 	public static BufferedImage goodTankL, goodTankU, goodTankR, goodTankD;
 	public static BufferedImage bulletL, bulletU, bulletR, bulletD;
+	public static BufferedImage missileLU, missileLD, missileRU, missileRD;
 	public static BufferedImage[] explodes = new BufferedImage[16];
 	
 	public static final String imagesPath = "";
@@ -31,6 +32,11 @@ public class ResourcesManager {
 			bulletL = ImageUtil.rotateImage(bulletU, -90);
 			bulletR = ImageUtil.rotateImage(bulletU, 90);
 			bulletD = ImageUtil.rotateImage(bulletU, 180);
+			
+			missileLU = ImageIO.read(classLoader.getResourceAsStream("images/missileLU.gif"));
+			missileLD = ImageIO.read(classLoader.getResourceAsStream("images/missileLD.gif"));
+			missileRU = ImageIO.read(classLoader.getResourceAsStream("images/missileRU.gif"));
+			missileRD = ImageIO.read(classLoader.getResourceAsStream("images/missileLD.gif"));
 			
 			for (int i = 0; i< 16; ) {
 				explodes[i] = ImageIO.read(classLoader.getResourceAsStream("images/e"+ (++i) +".gif"));

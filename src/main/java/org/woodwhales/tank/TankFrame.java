@@ -65,6 +65,8 @@ public class TankFrame extends Frame {
 		g.drawString("explodes size = " + explodes.size() ,10, 70);
 		g.setColor(color);
 		
+		g.drawImage(ResourcesManager.missileLD, 10, 90, null);
+		
 		myTank.paint(g);
 		
 		for(int i = 0; i < tanks.size(); i++) {

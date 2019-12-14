@@ -31,6 +31,7 @@ public class Bullet {
 		this.group = group;
 		this.frame = frame;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+		this.frame.bullets.add(this);
 	}
 
 	public void paint(Graphics g) {
