@@ -1,14 +1,12 @@
 package org.woodwhales.tank;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import lombok.Data;
 
 /**
- * 将tank封装 因为有多人一起玩的时候，不可能在 TankFrame 里定义n多个位置变量、方向变量等， 这样会导致代码变得耦合度很高，也很臃肿。
- * 
- * 
+ * 将tank封装 因为有多人一起玩的时候，不可能在 TankFrame 里定义n多个位置变量、方向变量等， 
+ * 这样会导致代码变得耦合度很高，也很臃肿。
  *
  */
 @Data
@@ -24,7 +22,7 @@ public class Tank {
 	private boolean moving = false;
 
 	private TankFrame frame;
-	
+
 	public Tank(int x, int y, Dir dir, TankFrame frame) {
 		this.x = x;
 		this.y = y;
@@ -33,11 +31,22 @@ public class Tank {
 	}
 
 	public void paint(Graphics g) {
-		Color color = g.getColor();
 		
-		g.setColor(Color.YELLOW);
-		g.fillRect(x, y, 50, 50);
-		g.setColor(color);
+		switch (dir) {
+		case LEFT:
+			g.drawImage(ResourcesManager.tankL, x, y, null);
+			break;
+		case UP:
+			g.drawImage(ResourcesManager.tankU, x, y, null);
+			break;
+		case RIGHT:
+			g.drawImage(ResourcesManager.tankR, x, y, null);
+			break;
+		case DOWN:
+			g.drawImage(ResourcesManager.tankD, x, y, null);
+			break;
+		}
+		
 		move();
 	}
 
@@ -66,7 +75,7 @@ public class Tank {
 	 * 发射子弹
 	 */
 	public void fire() {
-		this.frame.bullet = new Bullet(this.x, this.y, this.dir);
+		this.frame.bullets.add(new Bullet(this.x, this.y, this.dir, frame));
 	}
 
 }

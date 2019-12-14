@@ -8,14 +8,18 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TankFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
 
-	Tank myTank = new Tank(200, 200, Dir.RIGHT, this);
-	Bullet bullet = new Bullet(150, 150, Dir.DOWN);
+	List<Bullet> bullets = new ArrayList<>();
 	
+	Tank myTank = new Tank(200, 200, Dir.RIGHT, this);
+
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 	
 	public TankFrame() {
@@ -54,10 +58,29 @@ public class TankFrame extends Frame {
 	@Override
 	public void paint(Graphics g) {
 		
+//		Color color = g.getColor();
+//		g.setColor(Color.WHITE);
+//		g.drawString("bullets size = "+ bullets.size(), 10, 60);
+//		g.setColor(color);
+		
 		// 注意这里，不要再把myTank的属性取出来，再画位置，这样破坏了面向对象的封装思想。
 		// 只有tank自己知道自己要画在哪里，因此把画笔传给这个tank，让它自己画自己应该出现的位置。
 		myTank.paint(g);
-		bullet.paint(g);
+		
+		// 实现方式1：迭代子弹，判断是否为出屏幕的，如果是表示该子弹需要移除子弹列表
+//		for (int i = 0; i < bullets.size(); i++) {
+//			bullets.get(i).paint(g);
+//		}
+		
+		// 实现方式2：迭代子弹，判断是否为出屏幕的，如果是表示该子弹需要移除子弹列表
+		for(Iterator<Bullet> iterator = bullets.iterator(); iterator.hasNext() ; ) {
+			Bullet bullet = iterator.next();
+			if(!bullet.isLive()) {
+				iterator.remove();
+			}
+			bullet.paint(g);
+		}
+		
 	}
 
 	class MyKeyListener extends KeyAdapter {
@@ -107,7 +130,7 @@ public class TankFrame extends Frame {
 				case KeyEvent.VK_DOWN:
 					bD = false;
 					break;
-				case KeyEvent.VK_CONTROL:
+				case KeyEvent.VK_SPACE:
 					myTank.fire();
 					break;
 			}

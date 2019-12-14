@@ -1,6 +1,5 @@
 package org.woodwhales.tank;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import lombok.Data;
@@ -14,20 +13,38 @@ public class Bullet {
 	private int x, y;
 
 	private Dir dir;
+	
+	private TankFrame frame;
+	
+	private boolean live = true;
 
-	public Bullet(int x, int y, Dir dir) {
+	public Bullet(int x, int y, Dir dir, TankFrame frame) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
+		this.frame = frame;
 	}
 
 	public void paint(Graphics g) {
-		Color color = g.getColor();
+//		if(!live) {
+//			this.frame.bullets.remove(this);
+//		}
 		
-		g.setColor(Color.RED);
-		g.fillOval(x, y, WIDTH, HEIGHT);
+		switch (dir) {
+		case LEFT:
+			g.drawImage(ResourcesManager.bulletL, x, y, null);
+			break;
+		case UP:
+			g.drawImage(ResourcesManager.bulletU, x, y, null);
+			break;
+		case RIGHT:
+			g.drawImage(ResourcesManager.bulletR, x, y, null);
+			break;
+		case DOWN:
+			g.drawImage(ResourcesManager.bulletD, x, y, null);
+			break;
+		}
 		
-		g.setColor(color);
 		move();
 	}
 
@@ -45,6 +62,10 @@ public class Bullet {
 		case DOWN:
 			y += SPEED;
 			break;
+		}
+		
+		if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
+			this.live = false;
 		}
 	}
 
