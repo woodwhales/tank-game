@@ -23,10 +23,13 @@ public class Tank {
 	// tank是否为移动状态
 	private boolean moving = false;
 
-	public Tank(int x, int y, Dir dir) {
+	private TankFrame frame;
+	
+	public Tank(int x, int y, Dir dir, TankFrame frame) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
+		this.frame = frame;
 	}
 
 	public void paint(Graphics g) {
@@ -57,6 +60,13 @@ public class Tank {
 			y += SPEED;
 			break;
 		}
+	}
+
+	/**
+	 * 发射子弹
+	 */
+	public void fire() {
+		this.frame.bullet = new Bullet(this.x, this.y, this.dir);
 	}
 
 }

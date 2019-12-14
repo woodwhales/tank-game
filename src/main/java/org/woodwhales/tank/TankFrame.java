@@ -13,7 +13,7 @@ public class TankFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
 
-	Tank myTank = new Tank(200, 200, Dir.RIGHT);
+	Tank myTank = new Tank(200, 200, Dir.RIGHT, this);
 	Bullet bullet = new Bullet(150, 150, Dir.DOWN);
 	
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
@@ -106,6 +106,9 @@ public class TankFrame extends Frame {
 					break;
 				case KeyEvent.VK_DOWN:
 					bD = false;
+					break;
+				case KeyEvent.VK_CONTROL:
+					myTank.fire();
 					break;
 			}
 			
