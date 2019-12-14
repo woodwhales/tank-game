@@ -1,6 +1,7 @@
 package org.woodwhales.tank;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import lombok.Data;
@@ -19,8 +20,8 @@ public class Tank {
 
 	private static final int SPEED = 5;
 	
-	public static int WIDTH = ResourcesManager.tankD.getWidth();
-	public static int HEIGHT = ResourcesManager.tankD.getHeight();
+	public static int WIDTH = ResourcesManager.badTankD.getWidth();
+	public static int HEIGHT = ResourcesManager.badTankD.getHeight();
 	
 	// 是否是存活的
 	private boolean living = true;
@@ -50,20 +51,48 @@ public class Tank {
 		
 		switch (dir) {
 		case LEFT:
-			g.drawImage(ResourcesManager.tankL, x, y, null);
+			g.drawImage(getTankL(), x, y, null);
 			break;
 		case UP:
-			g.drawImage(ResourcesManager.tankU, x, y, null);
+			g.drawImage(getTankU(), x, y, null);
 			break;
 		case RIGHT:
-			g.drawImage(ResourcesManager.tankR, x, y, null);
+			g.drawImage(getTankR(), x, y, null);
 			break;
 		case DOWN:
-			g.drawImage(ResourcesManager.tankD, x, y, null);
+			g.drawImage(getTankD(), x, y, null);
 			break;
 		}
 		
 		move();
+	}
+	
+	private BufferedImage getTankL() {
+		if(this.group == Group.GOOD) {
+			return ResourcesManager.goodTankL;
+		}
+		return ResourcesManager.badTankL;
+	}
+	
+	private BufferedImage getTankU() {
+		if(this.group == Group.GOOD) {
+			return ResourcesManager.goodTankU;
+		}
+		return ResourcesManager.badTankU;
+	}
+	
+	private BufferedImage getTankR() {
+		if(this.group == Group.GOOD) {
+			return ResourcesManager.goodTankR;
+		}
+		return ResourcesManager.badTankR;
+	}
+	
+	private BufferedImage getTankD() {
+		if(this.group == Group.GOOD) {
+			return ResourcesManager.goodTankD;
+		}
+		return ResourcesManager.badTankD;
 	}
 
 	private void move() {
@@ -90,22 +119,41 @@ public class Tank {
 			this.fire();
 		}
 		
-		randomDir();
+		if(this.group == Group.BAD && random.nextInt(100) > 95) {
+			randomDir();
+		}
+		
+		boundsCheck();
+	}
+
+	private void boundsCheck() {
+		if(this.x < 0) {
+			this.x = 0;
+		}
+		
+		if(this.x > TankFrame.GAME_WIDTH - Tank.WIDTH) {
+			this.x = TankFrame.GAME_WIDTH - Tank.WIDTH;
+		}
+		
+		if(this.y < 25) {
+			this.y = 25;
+		}
+		
+		if(this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT) {
+			this.y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
+		}
 	}
 
 	private void randomDir() {
-		if(this.group == Group.BAD && random.nextInt(100) > 95) {
-			this.dir = Dir.values()[random.nextInt(4)];
-		}
-		
+		this.dir = Dir.values()[random.nextInt(4)];
 	}
 
 	/**
 	 * 发射子弹
 	 */
 	public void fire() {
-		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH;
-		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT;
+		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
+		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 		
 		this.frame.bullets.add(new Bullet(bX, bY, this.dir, this.group, frame));
 	}
