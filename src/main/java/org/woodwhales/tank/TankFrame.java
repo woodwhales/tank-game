@@ -11,9 +11,7 @@ public class TankFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
 
-	int x = 200, y = 200;
-	Dir dir = Dir.RIGHT;
-	private static final int SPEED = 10;
+	Tank myTank = new Tank(200, 200, Dir.RIGHT);
 	
 	public TankFrame() {
 		setVisible(true);
@@ -36,23 +34,10 @@ public class TankFrame extends Frame {
 	@Override
 	public void paint(Graphics g) {
 		
-		g.drawRect(x, y, 50, 50);
+		// 注意这里，不要再把myTank的属性取出来，再画位置，这样破坏了面向对象的封装思想。
+		// 只有tank自己知道自己要画在哪里，因此把画笔传给这个tank，让它自己画自己应该出现的位置。
 		
-		switch (dir) {
-			case LEFT:
-				x -= SPEED;
-				break;
-			case UP:
-				y -= SPEED;
-				break;
-			case RIGHT:
-				x += SPEED;
-				break;
-			case DOWN:
-				y += SPEED;
-				break;
-		}
-		
+		myTank.paint(g);
 	}
 
 	class MyKeyListener extends KeyAdapter {
@@ -107,27 +92,12 @@ public class TankFrame extends Frame {
 			setMainTankDir();
 		}
 		
+		// 根据键盘的按键情况，改变方向
 		private void setMainTankDir() {
-			if(bL) {
-				dir = Dir.LEFT;
-				return;
-			}
-			
-			if(bU) {
-				dir = Dir.UP;
-				return;
-			}
-			
-			if(bR) {
-				dir = Dir.RIGHT;
-				return;
-			}
-			
-			if(bD) {
-				dir = Dir.DOWN;
-				return;
-			}
-			
+			if(bL) myTank.setDir(Dir.LEFT);
+			if(bU) myTank.setDir(Dir.UP);
+			if(bR) myTank.setDir(Dir.RIGHT);
+			if(bD) myTank.setDir(Dir.DOWN);
 		}
 	}
 }
