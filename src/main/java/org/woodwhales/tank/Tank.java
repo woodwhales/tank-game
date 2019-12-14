@@ -119,9 +119,6 @@ public class Tank {
 			break;
 		}
 		
-		this.rectangle.x = this.x;
-		this.rectangle.y = this.y;
-
 		if(this.group == Group.BAD && random.nextInt(100) > 95) {
 			this.fire();
 		}
@@ -131,6 +128,9 @@ public class Tank {
 		}
 		
 		boundsCheck();
+		
+		this.rectangle.x = this.x;
+		this.rectangle.y = this.y;
 	}
 
 	private void boundsCheck() {

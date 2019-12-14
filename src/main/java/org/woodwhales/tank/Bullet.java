@@ -73,12 +73,12 @@ public class Bullet {
 			break;
 		}
 		
-		this.rectangle.x = this.x;
-		this.rectangle.y = this.y;
-		
-		if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
+		if(x < 0 || y < 25 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
 			this.living = false;
 		}
+		
+		this.rectangle.x = this.x;
+		this.rectangle.y = this.y;
 	}
 
 	/**
