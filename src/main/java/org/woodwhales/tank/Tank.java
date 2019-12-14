@@ -1,5 +1,6 @@
 package org.woodwhales.tank;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import lombok.Data;
@@ -29,7 +30,11 @@ public class Tank {
 	}
 
 	public void paint(Graphics g) {
-		g.drawRect(x, y, 50, 50);
+		Color color = g.getColor();
+		
+		g.setColor(Color.YELLOW);
+		g.fillRect(x, y, 50, 50);
+		g.setColor(color);
 		move();
 	}
 
