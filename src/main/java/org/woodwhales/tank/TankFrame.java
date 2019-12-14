@@ -18,6 +18,8 @@ public class TankFrame extends Frame {
 
 	List<Bullet> bullets = new ArrayList<>();
 	List<Tank> tanks = new ArrayList<>();
+	Explode explode = new Explode(100, 100, this);
+	
 	
 	Tank myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD, this);
 
@@ -64,6 +66,8 @@ public class TankFrame extends Frame {
 		g.drawString("bullets size = " + bullets.size() ,10, 50);
 		g.drawString("enemies size = " + tanks.size() ,10, 60);
 		g.setColor(color);
+		
+		explode.paint(g);
 		
 		myTank.paint(g);
 		

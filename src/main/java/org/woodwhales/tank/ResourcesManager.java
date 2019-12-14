@@ -9,6 +9,8 @@ public class ResourcesManager {
 
 	public static BufferedImage tankL, tankU, tankR, tankD;
 	public static BufferedImage bulletL, bulletU, bulletR, bulletD;
+	public static BufferedImage[] explodes = new BufferedImage[16];
+	
 	public static final String imagesPath = "";
 	
 	static {
@@ -23,6 +25,10 @@ public class ResourcesManager {
 			bulletU = ImageIO.read(classLoader.getResourceAsStream("images/bulletU.gif"));
 			bulletR = ImageIO.read(classLoader.getResourceAsStream("images/bulletR.gif"));
 			bulletD = ImageIO.read(classLoader.getResourceAsStream("images/bulletD.gif"));
+			
+			for (int i = 0; i< 16; ) {
+				explodes[i] = ImageIO.read(classLoader.getResourceAsStream("images/e"+ (++i) +".gif"));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
