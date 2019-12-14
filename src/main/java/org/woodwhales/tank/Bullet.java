@@ -12,6 +12,8 @@ public class Bullet {
 	public static int WIDTH = ResourcesManager.bulletD.getWidth();
 	public static int HEIGHT = ResourcesManager.bulletD.getHeight();
 
+	private Rectangle rectangle;
+	
 	private int x, y;
 
 	private Dir dir;
@@ -28,6 +30,7 @@ public class Bullet {
 		this.dir = dir;
 		this.group = group;
 		this.frame = frame;
+		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 
 	public void paint(Graphics g) {
@@ -70,6 +73,9 @@ public class Bullet {
 			break;
 		}
 		
+		this.rectangle.x = this.x;
+		this.rectangle.y = this.y;
+		
 		if(x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
 			this.living = false;
 		}
@@ -87,11 +93,7 @@ public class Bullet {
 		int tankX = tank.getX();
 		int tankY = tank.getY();
 		
-		//TODO 用一个rect来记录子弹的位置
-		Rectangle rectangle1 = new Rectangle(this.x, this.y, Bullet.WIDTH, Bullet.HEIGHT);
-		Rectangle rectangle2 = new Rectangle(tankX, tankY, Tank.WIDTH, Tank.HEIGHT);
-		
-		if(rectangle1.intersects(rectangle2)) {
+		if(this.rectangle.intersects(tank.getRectangle())) {
 			tank.die();
 			this.die();
 			

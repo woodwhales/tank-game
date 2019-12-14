@@ -1,6 +1,7 @@
 package org.woodwhales.tank;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -35,12 +36,15 @@ public class Tank {
 	
 	private TankFrame frame;
 
+	private Rectangle rectangle;
+	
 	public Tank(int x, int y, Dir dir, Group group, TankFrame frame) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
 		this.frame = frame;
+		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 
 	public void paint(Graphics g) {
@@ -114,6 +118,9 @@ public class Tank {
 			y += SPEED;
 			break;
 		}
+		
+		this.rectangle.x = this.x;
+		this.rectangle.y = this.y;
 
 		if(this.group == Group.BAD && random.nextInt(100) > 95) {
 			this.fire();
