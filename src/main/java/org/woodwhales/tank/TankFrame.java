@@ -12,6 +12,7 @@ public class TankFrame extends Frame {
 	private static final long serialVersionUID = 1L;
 
 	Tank myTank = new Tank(200, 200, Dir.RIGHT);
+	Bullet bullet = new Bullet(150, 150, Dir.DOWN);
 	
 	public TankFrame() {
 		setVisible(true);
@@ -36,8 +37,8 @@ public class TankFrame extends Frame {
 		
 		// 注意这里，不要再把myTank的属性取出来，再画位置，这样破坏了面向对象的封装思想。
 		// 只有tank自己知道自己要画在哪里，因此把画笔传给这个tank，让它自己画自己应该出现的位置。
-		
 		myTank.paint(g);
+		bullet.paint(g);
 	}
 
 	class MyKeyListener extends KeyAdapter {

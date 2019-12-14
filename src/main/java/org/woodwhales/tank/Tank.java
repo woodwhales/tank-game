@@ -17,7 +17,7 @@ public class Tank {
 
 	private Dir dir = Dir.DOWN;
 
-	private static final int SPEED = 10;
+	private static final int SPEED = 5;
 
 	// tank是否为移动状态
 	private boolean moving = false;
@@ -30,9 +30,7 @@ public class Tank {
 
 	public void paint(Graphics g) {
 		g.drawRect(x, y, 50, 50);
-
 		move();
-
 	}
 
 	private void move() {
