@@ -17,6 +17,9 @@ public class Tank {
 	private Dir dir = Dir.DOWN;
 
 	private static final int SPEED = 5;
+	
+	public static int WIDTH = ResourcesManager.tankD.getWidth();
+	public static int HEIGHT = ResourcesManager.tankD.getHeight();
 
 	// tank是否为移动状态
 	private boolean moving = false;
@@ -75,7 +78,10 @@ public class Tank {
 	 * 发射子弹
 	 */
 	public void fire() {
-		this.frame.bullets.add(new Bullet(this.x, this.y, this.dir, frame));
+		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH;
+		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT;
+		
+		this.frame.bullets.add(new Bullet(bX, bY, this.dir, frame));
 	}
 
 }

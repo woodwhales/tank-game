@@ -8,7 +8,8 @@ import lombok.Data;
 public class Bullet {
 
 	private static final int SPEED = 10;
-	private static int WIDTH = 20, HEIGHT = 20;
+	public static int WIDTH = ResourcesManager.bulletD.getWidth();
+	public static int HEIGHT = ResourcesManager.bulletD.getHeight();
 
 	private int x, y;
 
