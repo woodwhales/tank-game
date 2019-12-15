@@ -1,5 +1,6 @@
 package org.woodwhales.tank.abstractfactory.defaultskin;
 
+import org.woodwhales.tank.Bullet;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Explode;
 import org.woodwhales.tank.Group;
@@ -24,8 +25,7 @@ public class DefaultGameFactory extends GameFactory {
 
 	@Override
 	public BaseBullet createBullet(int x, int y, Dir dir, Group group, TankFrame frame) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Bullet(x, y, dir, group, frame);
 	}
 
 }

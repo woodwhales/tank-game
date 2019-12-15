@@ -3,10 +3,14 @@ package org.woodwhales.tank;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import org.woodwhales.tank.abstractfactory.BaseBullet;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class Bullet {
+@EqualsAndHashCode(callSuper=false)
+public class Bullet extends BaseBullet {
 
 	private static final int SPEED = 10;
 	public static int WIDTH = ResourcesManager.bulletD.getWidth();
@@ -34,6 +38,7 @@ public class Bullet {
 		this.frame.bullets.add(this);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		if(!living) {
 			frame.bullets.remove(this);
