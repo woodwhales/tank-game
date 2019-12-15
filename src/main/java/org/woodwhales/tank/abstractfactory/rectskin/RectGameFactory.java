@@ -23,8 +23,7 @@ public class RectGameFactory extends GameFactory {
 
 	@Override
 	public BaseBullet createBullet(int x, int y, Dir dir, Group group, TankFrame frame) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RectBullet(x, y, dir, group, frame);
 	}
 
 }
