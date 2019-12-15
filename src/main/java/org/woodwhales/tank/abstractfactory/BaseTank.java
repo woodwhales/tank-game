@@ -7,7 +7,6 @@ import java.util.Random;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.FireStrategy;
 import org.woodwhales.tank.Group;
-import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 
 import lombok.Data;
@@ -17,7 +16,9 @@ public abstract class BaseTank {
 	
 	protected int speed;
 	
-	protected int x, y;
+	protected int width;
+	
+	protected int height;
 	
 	protected TankFrame frame;
 	
@@ -52,60 +53,11 @@ public abstract class BaseTank {
 		fireStrategy.fire(this);
 	}
 	
-	protected void move() {
-		if (!moving) {
-			return;
-		}
-
-		switch (dir) {
-		case LEFT:
-			x -= speed;
-			break;
-		case UP:
-			y -= speed;
-			break;
-		case RIGHT:
-			x += speed;
-			break;
-		case DOWN:
-			y += speed;
-			break;
-		}
-		
-		if(this.group == Group.BAD && random.nextInt(100) > 95) {
-			this.fireStrategy.fire(this);
-		}
-		
-		if(this.group == Group.BAD && random.nextInt(100) > 95) {
-			randomDir();
-		}
-		
-		boundsCheck();
-		
-		this.rectangle.x = this.x;
-		this.rectangle.y = this.y;
-	}
-
-	protected void boundsCheck() {
-		if(this.x < 0) {
-			this.x = 0;
-		}
-		
-		if(this.x > TankFrame.GAME_WIDTH - Tank.WIDTH) {
-			this.x = TankFrame.GAME_WIDTH - Tank.WIDTH;
-		}
-		
-		if(this.y < 25) {
-			this.y = 25;
-		}
-		
-		if(this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT) {
-			this.y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
-		}
-	}
-
 	protected void randomDir() {
 		this.dir = Dir.values()[random.nextInt(4)];
 	}
 
+	public abstract int getX();
+	
+	public abstract int getY();
 }

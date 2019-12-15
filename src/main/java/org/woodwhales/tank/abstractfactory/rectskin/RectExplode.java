@@ -36,7 +36,8 @@ public class RectExplode extends BaseExplode {
 		Color color = g.getColor();
 		
 		g.setColor(Color.RED);
-		g.fillRect(x, y, 10 * step, 10 * step);
+		
+		g.fillRect(this.x, this.y, 10 * step, 10 * step);
 			
 		step++;
 		

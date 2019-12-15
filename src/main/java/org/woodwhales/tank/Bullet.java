@@ -14,27 +14,23 @@ import lombok.EqualsAndHashCode;
 public class Bullet extends BaseBullet {
 
 	private static final int SPEED = 10;
+	
 	public static int WIDTH = ResourcesManager.bulletD.getWidth();
 	public static int HEIGHT = ResourcesManager.bulletD.getHeight();
-
-	private Rectangle rectangle;
-	
-	private int x, y;
-
-	private Dir dir;
 	
 	private TankFrame frame;
 	
-	private boolean living = true;
+	private int x, y;
 	
-	private Group group = Group.BAD;
+	private boolean living = true;
 
 	public Bullet(int x, int y, Dir dir, Group group, TankFrame frame) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.frame = frame;
+		this.frame = frame; 
+		this.speed = SPEED; 
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 		this.frame.bullets.add(this);
 	}
@@ -64,30 +60,6 @@ public class Bullet extends BaseBullet {
 		move();
 	}
 
-	private void move() {
-		switch (dir) {
-		case LEFT:
-			x -= SPEED;
-			break;
-		case UP:
-			y -= SPEED;
-			break;
-		case RIGHT:
-			x += SPEED;
-			break;
-		case DOWN:
-			y += SPEED;
-			break;
-		}
-		
-		if(x < 0 || y < 25 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) {
-			this.living = false;
-		}
-		
-		this.rectangle.x = this.x;
-		this.rectangle.y = this.y;
-	}
-
 	/**
 	 * 子弹做碰撞检测
 	 * @param tank
@@ -110,8 +82,33 @@ public class Bullet extends BaseBullet {
 		}
 	}
 
-	private void die() {
+	public void move() {
+		switch (dir) {
+		case LEFT:
+			x -= SPEED;
+			break;
+		case UP:
+			y -= SPEED;
+			break;
+		case RIGHT:
+			x += SPEED;
+			break;
+		case DOWN:
+			y += SPEED;
+			break;
+		}
+		
+		if(this.x < 0 || this.y < 25 
+				|| this.x > TankFrame.GAME_WIDTH 
+				|| this.y > TankFrame.GAME_HEIGHT) {
+			this.living = false;
+		}
+		
+		this.rectangle.x = this.x;
+		this.rectangle.y = this.y;
+	}
+	
+	public void die() {
 		this.living = false;
 	}
-
 }
