@@ -4,6 +4,7 @@ import org.woodwhales.tank.Bullet;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Explode;
 import org.woodwhales.tank.Group;
+import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 import org.woodwhales.tank.abstractfactory.BaseBullet;
 import org.woodwhales.tank.abstractfactory.BaseExplode;
@@ -14,8 +15,7 @@ public class DefaultGameFactory extends GameFactory {
 
 	@Override
 	public BaseTank createTank(int x, int y, Dir dir, Group group, TankFrame frame) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Tank(x, y, dir, group, frame);
 	}
 
 	@Override
