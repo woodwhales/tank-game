@@ -5,9 +5,9 @@ import org.woodwhales.tank.abstractfactory.BaseTank;
 public class FourDirFireStrategy implements FireStrategy {
 
 	@Override
-	public void fire(BaseTank tank) {
-		int bX = tank.getX() + Tank.WIDTH/2 - Bullet.WIDTH/2;
-		int bY = tank.getY() + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
+	public void fire(BaseTank tank, int positionX, int positionY) {
+		int bX = tank.getX() + positionX;
+		int bY = tank.getY() + positionY;
 		
 		Dir[] dirs = Dir.values();
 		

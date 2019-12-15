@@ -9,6 +9,11 @@ import org.woodwhales.tank.abstractfactory.BaseTank;
 import org.woodwhales.tank.abstractfactory.GameFactory;
 
 public class RectGameFactory extends GameFactory {
+	
+	public RectGameFactory() {
+		this.bulletWidth = RectBullet.WIDTH;
+		this.bulletHeight = RectBullet.HEIGHT;
+	}
 
 	@Override
 	public BaseTank createTank(int x, int y, Dir dir, Group group, TankFrame frame) {

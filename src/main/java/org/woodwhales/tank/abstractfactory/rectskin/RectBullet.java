@@ -72,8 +72,8 @@ public class RectBullet extends BaseBullet {
 			tank.die();
 			this.die();
 			
-			int eX = tankX + RectTank.WIDTH/2 - RectExplode.WIDTH/2;
-			int eY = tankY + RectTank.HEIGHT/2 - RectExplode.HEIGHT/2;
+			int eX = tankX + RectTank.WIDTH/2;
+			int eY = tankY + RectTank.HEIGHT/2;
 			this.frame.explodes.add(this.frame.gameFactory.createExplode(eX, eY, frame));
 		}
 	}

@@ -24,6 +24,8 @@ public class RectExplode extends BaseExplode {
 	
 	private int step = 0;
 	
+	private static int explodeSize = 5;
+	
 	public RectExplode(int x, int y, TankFrame frame) {
 		this.x = x;
 		this.y = y;
@@ -35,9 +37,9 @@ public class RectExplode extends BaseExplode {
 	public void paint(Graphics g) {
 		Color color = g.getColor();
 		
-		g.setColor(Color.RED);
+		g.setColor(Color.YELLOW);
 		
-		g.fillRect(this.x, this.y, 10 * step, 10 * step);
+		g.fillRect(this.x - (explodeSize * step)/2, this.y - (explodeSize * step)/2, explodeSize * step, explodeSize * step);
 			
 		step++;
 		

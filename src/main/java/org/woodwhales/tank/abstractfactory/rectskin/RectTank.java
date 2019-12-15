@@ -39,6 +39,8 @@ public class RectTank extends BaseTank {
 		this.speed = SPEED;
 		this.width = WIDTH;
 		this.height = HEIGHT;
+		this.positionX = WIDTH / 2 - RectBullet.WIDTH / 2;
+		this.positionY = HEIGHT / 2 - RectBullet.HEIGHT/2;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 		
 		String fireStrategyClass = null;
@@ -96,7 +98,7 @@ public class RectTank extends BaseTank {
 		}
 		
 		if(this.group == Group.BAD && random.nextInt(100) > 95) {
-			this.fireStrategy.fire(this);
+			this.fireStrategy.fire(this, positionX, positionY);
 		}
 		
 		if(this.group == Group.BAD && random.nextInt(100) > 95) {

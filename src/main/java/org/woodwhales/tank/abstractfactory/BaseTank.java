@@ -20,6 +20,10 @@ public abstract class BaseTank {
 	
 	protected int height;
 	
+	protected int positionX;
+	
+	protected int positionY;
+	
 	protected TankFrame frame;
 	
 	protected Dir dir = Dir.DOWN;
@@ -50,7 +54,7 @@ public abstract class BaseTank {
 	 * 成员变量：该属性的作用域是整个类，导致类的结构更加复杂
 	 */
 	public void fire() {
-		fireStrategy.fire(this);
+		fireStrategy.fire(this, positionX, positionY);
 	}
 	
 	protected void randomDir() {
