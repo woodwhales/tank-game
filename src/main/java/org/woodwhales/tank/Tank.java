@@ -56,7 +56,7 @@ public class Tank {
 		}
 		
 		try {
-			this.fireStrategy = (FireStrategy) Class.forName(fireStrategyClass).newInstance();
+			this.fireStrategy = (FireStrategy) Class.forName(fireStrategyClass).getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

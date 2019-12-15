@@ -100,7 +100,7 @@ public class Bullet {
 			
 			int eX = tankX + Tank.WIDTH/2 - Explode.WIDTH/2;
 			int eY = tankY + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-			this.frame.explodes.add(new Explode(eX, eY, frame));
+			this.frame.explodes.add(this.frame.gameFactory.createExplode(eX, eY, frame));
 		}
 	}
 

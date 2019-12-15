@@ -11,13 +11,19 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.woodwhales.tank.abstractfactory.BaseExplode;
+import org.woodwhales.tank.abstractfactory.GameFactory;
+import org.woodwhales.tank.abstractfactory.rect.RectGameFactory;
+
 public class TankFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
+	
+	GameFactory gameFactory = new RectGameFactory();
 
-	List<Bullet> bullets = new ArrayList<>();
-	List<Tank> tanks = new ArrayList<>();
-	List<Explode> explodes = new ArrayList<>();
+	public List<Bullet> bullets = new ArrayList<>();
+	public List<Tank> tanks = new ArrayList<>();
+	public List<BaseExplode> explodes = new ArrayList<>();
 	
 	Tank myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD, this);
 
@@ -65,7 +71,7 @@ public class TankFrame extends Frame {
 		g.drawString("explodes size = " + explodes.size() ,10, 70);
 		g.setColor(color);
 		
-		g.drawImage(ResourcesManager.missileLD, 10, 90, null);
+//		g.drawImage(ResourcesManager.missileLD, 10, 90, null);
 		
 		myTank.paint(g);
 		
