@@ -12,8 +12,7 @@ public class RectGameFactory extends GameFactory {
 
 	@Override
 	public BaseTank createTank(int x, int y, Dir dir, Group group, TankFrame frame) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RectTank(x, y, dir, group, frame);
 	}
 
 	@Override

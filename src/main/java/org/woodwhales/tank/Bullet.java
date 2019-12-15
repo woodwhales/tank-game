@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import org.woodwhales.tank.abstractfactory.BaseBullet;
+import org.woodwhales.tank.abstractfactory.BaseTank;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -91,7 +92,7 @@ public class Bullet extends BaseBullet {
 	 * 子弹做碰撞检测
 	 * @param tank
 	 */
-	public void collideWith(Tank tank) {
+	public void collideWith(BaseTank tank) {
 		if(this.group == tank.getGroup()) {
 			return;
 		}

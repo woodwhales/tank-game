@@ -10,6 +10,7 @@ import org.woodwhales.tank.Group;
 import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 import org.woodwhales.tank.abstractfactory.BaseBullet;
+import org.woodwhales.tank.abstractfactory.BaseTank;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -87,7 +88,7 @@ public class RectBullet extends BaseBullet {
 	 * 子弹做碰撞检测
 	 * @param tank
 	 */
-	public void collideWith(Tank tank) {
+	public void collideWith(BaseTank tank) {
 		if(this.group == tank.getGroup()) {
 			return;
 		}

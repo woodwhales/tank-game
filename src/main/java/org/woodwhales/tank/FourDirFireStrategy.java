@@ -1,9 +1,11 @@
 package org.woodwhales.tank;
 
+import org.woodwhales.tank.abstractfactory.BaseTank;
+
 public class FourDirFireStrategy implements FireStrategy {
 
 	@Override
-	public void fire(Tank tank) {
+	public void fire(BaseTank tank) {
 		int bX = tank.getX() + Tank.WIDTH/2 - Bullet.WIDTH/2;
 		int bY = tank.getY() + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 		
