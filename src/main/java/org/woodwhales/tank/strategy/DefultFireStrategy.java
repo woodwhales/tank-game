@@ -1,6 +1,8 @@
-package org.woodwhales.tank;
+package org.woodwhales.tank.strategy;
 
 import org.woodwhales.tank.abstractfactory.BaseTank;
+import org.woodwhales.tank.enums.Group;
+import org.woodwhales.tank.utils.Audio;
 
 public class DefultFireStrategy implements FireStrategy {
 	

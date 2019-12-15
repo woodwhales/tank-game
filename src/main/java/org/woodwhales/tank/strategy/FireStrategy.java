@@ -1,4 +1,4 @@
-package org.woodwhales.tank;
+package org.woodwhales.tank.strategy;
 
 import org.woodwhales.tank.abstractfactory.BaseTank;
 

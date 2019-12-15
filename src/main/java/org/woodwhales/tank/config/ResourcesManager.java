@@ -1,9 +1,11 @@
-package org.woodwhales.tank;
+package org.woodwhales.tank.config;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import org.woodwhales.tank.utils.ImageUtil;
 
 public class ResourcesManager {
 

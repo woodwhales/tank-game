@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import org.woodwhales.tank.Dir;
-import org.woodwhales.tank.FireStrategy;
-import org.woodwhales.tank.Group;
-import org.woodwhales.tank.PropertiesManager;
 import org.woodwhales.tank.TankFrame;
 import org.woodwhales.tank.abstractfactory.BaseTank;
+import org.woodwhales.tank.config.PropertiesManager;
+import org.woodwhales.tank.enums.Dir;
+import org.woodwhales.tank.enums.Group;
+import org.woodwhales.tank.strategy.FireStrategy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

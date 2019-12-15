@@ -1,6 +1,10 @@
 package org.woodwhales.tank;
 
-public class TankMain {
+import org.woodwhales.tank.config.PropertiesManager;
+import org.woodwhales.tank.enums.Dir;
+import org.woodwhales.tank.enums.Group;
+
+public class TankGameMain {
 
 	public static void main(String[] args) throws InterruptedException {
 		TankFrame tankFrame = new TankFrame();

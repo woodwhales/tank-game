@@ -1,12 +1,12 @@
 package org.woodwhales.tank.abstractfactory.rectskin;
 
-import org.woodwhales.tank.Dir;
-import org.woodwhales.tank.Group;
 import org.woodwhales.tank.TankFrame;
 import org.woodwhales.tank.abstractfactory.BaseBullet;
 import org.woodwhales.tank.abstractfactory.BaseExplode;
 import org.woodwhales.tank.abstractfactory.BaseTank;
 import org.woodwhales.tank.abstractfactory.GameFactory;
+import org.woodwhales.tank.enums.Dir;
+import org.woodwhales.tank.enums.Group;
 
 public class RectGameFactory extends GameFactory {
 	

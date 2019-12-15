@@ -3,6 +3,7 @@ package org.woodwhales.tank;
 import java.awt.Graphics;
 
 import org.woodwhales.tank.abstractfactory.BaseExplode;
+import org.woodwhales.tank.config.ResourcesManager;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

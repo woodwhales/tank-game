@@ -5,6 +5,11 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import org.woodwhales.tank.abstractfactory.BaseTank;
+import org.woodwhales.tank.config.PropertiesManager;
+import org.woodwhales.tank.config.ResourcesManager;
+import org.woodwhales.tank.enums.Dir;
+import org.woodwhales.tank.enums.Group;
+import org.woodwhales.tank.strategy.FireStrategy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +39,7 @@ public class Tank extends BaseTank {
 		this.group = group;
 		this.width = WIDTH;
 		this.height = HEIGHT;
-		this.positionX = WIDTH / 21 - Bullet.WIDTH / 2;
+		this.positionX = WIDTH / 2 - Bullet.WIDTH/2;
 		this.positionY = HEIGHT / 2 - Bullet.HEIGHT/2;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 		
@@ -48,7 +53,9 @@ public class Tank extends BaseTank {
 		try {
 			this.fireStrategy = (FireStrategy) Class.forName(fireStrategyClass).getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
+			System.err.println("can not found this class file = " + fireStrategyClass);
 			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 

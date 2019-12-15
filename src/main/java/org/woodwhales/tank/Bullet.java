@@ -5,6 +5,9 @@ import java.awt.Rectangle;
 
 import org.woodwhales.tank.abstractfactory.BaseBullet;
 import org.woodwhales.tank.abstractfactory.BaseTank;
+import org.woodwhales.tank.config.ResourcesManager;
+import org.woodwhales.tank.enums.Dir;
+import org.woodwhales.tank.enums.Group;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

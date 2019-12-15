@@ -1,8 +1,8 @@
 package org.woodwhales.tank.abstractfactory;
 
-import org.woodwhales.tank.Dir;
-import org.woodwhales.tank.Group;
 import org.woodwhales.tank.TankFrame;
+import org.woodwhales.tank.enums.Dir;
+import org.woodwhales.tank.enums.Group;
 
 import lombok.Getter;
 

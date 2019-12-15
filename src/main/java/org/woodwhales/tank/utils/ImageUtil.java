@@ -1,4 +1,4 @@
-package org.woodwhales.tank;
+package org.woodwhales.tank.utils;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

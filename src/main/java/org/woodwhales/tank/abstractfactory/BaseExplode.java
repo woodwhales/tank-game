@@ -2,7 +2,7 @@ package org.woodwhales.tank.abstractfactory;
 
 import java.awt.Graphics;
 
-import org.woodwhales.tank.Audio;
+import org.woodwhales.tank.utils.Audio;
 
 public abstract class BaseExplode {
 

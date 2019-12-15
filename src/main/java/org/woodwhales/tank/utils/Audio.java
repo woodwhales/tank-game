@@ -1,4 +1,4 @@
-package org.woodwhales.tank;
+package org.woodwhales.tank.utils;
 
 import java.io.IOException;
 
