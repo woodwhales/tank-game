@@ -1,9 +1,13 @@
-package org.woodwhales.tank.abstractfactory;
+package org.woodwhales.tank.abstractfactory.defaultskin;
 
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Explode;
 import org.woodwhales.tank.Group;
 import org.woodwhales.tank.TankFrame;
+import org.woodwhales.tank.abstractfactory.BaseBullet;
+import org.woodwhales.tank.abstractfactory.BaseExplode;
+import org.woodwhales.tank.abstractfactory.BaseTank;
+import org.woodwhales.tank.abstractfactory.GameFactory;
 
 public class DefaultGameFactory extends GameFactory {
 

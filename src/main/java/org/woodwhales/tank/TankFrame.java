@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.woodwhales.tank.abstractfactory.BaseExplode;
 import org.woodwhales.tank.abstractfactory.GameFactory;
-import org.woodwhales.tank.abstractfactory.rect.RectGameFactory;
+import org.woodwhales.tank.abstractfactory.rectskin.RectGameFactory;
 
 public class TankFrame extends Frame {
 

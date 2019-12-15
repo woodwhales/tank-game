@@ -1,4 +1,4 @@
-package org.woodwhales.tank.abstractfactory.rect;
+package org.woodwhales.tank.abstractfactory.rectskin;
 
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;

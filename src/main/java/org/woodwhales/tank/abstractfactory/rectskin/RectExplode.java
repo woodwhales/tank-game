@@ -1,4 +1,4 @@
-package org.woodwhales.tank.abstractfactory.rect;
+package org.woodwhales.tank.abstractfactory.rectskin;
 
 import java.awt.Color;
 import java.awt.Graphics;
