@@ -8,18 +8,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TankFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
 
-	List<Bullet> bullets = new ArrayList<>();
-	List<Tank> tanks = new ArrayList<>();
-	List<Explode> explodes = new ArrayList<>();
-	
-	Tank myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD, this);
+	GameModel gameModel = new GameModel();
 
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 	
@@ -58,34 +52,8 @@ public class TankFrame extends Frame {
 	// 因此想要方框能够移动，那么就需要不停地调用paint()方法，重新画方框的位置
 	@Override
 	public void paint(Graphics g) {
-		Color color = g.getColor();
-		g.setColor(Color.WHITE);
-		g.drawString("bullets size = " + bullets.size() ,10, 50);
-		g.drawString("enemies size = " + tanks.size() ,10, 60);
-		g.drawString("explodes size = " + explodes.size() ,10, 70);
-		g.setColor(color);
 		
-		g.drawImage(ResourcesManager.missileLD, 10, 90, null);
-		
-		myTank.paint(g);
-		
-		for(int i = 0; i < tanks.size(); i++) {
-			tanks.get(i).paint(g);
-		}
-		
-		for(int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).paint(g);
-		}
-		
-		for (int i = 0; i < explodes.size(); i++) {
-			explodes.get(i).paint(g);
-		}
-		
-		for (int i = 0; i < bullets.size(); i++) {
-			for (int j = 0; j < tanks.size(); j++) {
-				bullets.get(i).collideWith(tanks.get(j));
-			}
-		}
+		gameModel.paint(g);
 		
 	}
 
@@ -137,7 +105,7 @@ public class TankFrame extends Frame {
 					bD = false;
 					break;
 				case KeyEvent.VK_SPACE:
-					myTank.fire();
+					gameModel.getMainTank().fire();
 					break;
 			}
 			
@@ -146,6 +114,8 @@ public class TankFrame extends Frame {
 		
 		// 根据键盘的按键情况，改变方向
 		private void setMainTankDir() {
+			Tank myTank = gameModel.getMainTank(); 
+			
 			if(bL || bU || bR || bD) {
 				myTank.setMoving(true);
 				

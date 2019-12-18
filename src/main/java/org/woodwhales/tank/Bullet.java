@@ -18,25 +18,25 @@ public class Bullet {
 
 	private Dir dir;
 	
-	private TankFrame frame;
+	private GameModel gameModel;
 	
 	private boolean living = true;
 	
 	private Group group = Group.BAD;
 
-	public Bullet(int x, int y, Dir dir, Group group, TankFrame frame) {
+	public Bullet(int x, int y, Dir dir, Group group, GameModel gameModel) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.frame = frame;
+		this.gameModel = gameModel;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-		this.frame.bullets.add(this);
+		this.gameModel.bullets.add(this);
 	}
 
 	public void paint(Graphics g) {
 		if(!living) {
-			frame.bullets.remove(this);
+			gameModel.bullets.remove(this);
 			return;
 		}
 		
@@ -100,7 +100,7 @@ public class Bullet {
 			
 			int eX = tankX + Tank.WIDTH/2 - Explode.WIDTH/2;
 			int eY = tankY + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-			this.frame.explodes.add(new Explode(eX, eY, frame));
+			this.gameModel.explodes.add(new Explode(eX, eY, gameModel));
 		}
 	}
 

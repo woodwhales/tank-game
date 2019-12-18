@@ -12,23 +12,23 @@ public class Explode {
 
 	private int x, y;
 
-	private TankFrame frame;
+	private GameModel gameModel;
 	
 	private boolean living = true;
 	
 	private int step = 0;
 	
-	public Explode(int x, int y, TankFrame frame) {
+	public Explode(int x, int y, GameModel gameModel) {
 		this.x = x;
 		this.y = y;
-		this.frame = frame;
+		this.gameModel = gameModel;
 		new Thread(()-> new Audio("audio/explode.wav").play()).start();
 	}
 
 	public void paint(Graphics g) {
 		g.drawImage(ResourcesManager.explodes[step++], this.x, this.y, null);
 		if(step >= ResourcesManager.explodes.length) {
-			this.frame.explodes.remove(this);
+			this.gameModel.explodes.remove(this);
 		}
 	}
 

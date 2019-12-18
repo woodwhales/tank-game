@@ -34,18 +34,18 @@ public class Tank {
 	
 	private Group group = Group.BAD;
 	
-	private TankFrame frame;
+	private GameModel gameModel;
 
 	private Rectangle rectangle;
 	
 	private FireStrategy fireStrategy;
 	
-	public Tank(int x, int y, Dir dir, Group group, TankFrame frame) {
+	public Tank(int x, int y, Dir dir, Group group, GameModel gameModel) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.frame = frame;
+		this.gameModel = gameModel;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 		
 		String fireStrategyClass = null;
@@ -64,7 +64,7 @@ public class Tank {
 
 	public void paint(Graphics g) {
 		if(!living) {
-			frame.tanks.remove(this);
+			gameModel.tanks.remove(this);
 			return;
 		}
 		
