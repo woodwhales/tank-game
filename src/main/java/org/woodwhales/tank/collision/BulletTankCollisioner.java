@@ -46,7 +46,7 @@ public class BulletTankCollisioner implements Collisioner {
 			
 			int eX = tankX + Tank.WIDTH/2 - Explode.WIDTH/2;
 			int eY = tankY + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-			bullet.getGameModel().add(new Explode(eX, eY, bullet.getGameModel()));
+			new Explode(eX, eY);
 			return true;
 		}
 		

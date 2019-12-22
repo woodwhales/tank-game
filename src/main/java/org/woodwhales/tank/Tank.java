@@ -38,18 +38,15 @@ public class Tank extends GameObject {
 	
 	private Group group = Group.BAD;
 	
-	private GameModel gameModel;
-
 	private Rectangle rectangle;
 	
 	private FireStrategy fireStrategy;
 	
-	public Tank(int x, int y, Dir dir, Group group, GameModel gameModel) {
+	public Tank(int x, int y, Dir dir, Group group) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.gameModel = gameModel;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 		
 		String fireStrategyClass = null;
@@ -66,12 +63,14 @@ public class Tank extends GameObject {
 			System.err.print("load fireStrategyClass from config happend error!");
 			System.exit(0);
 		}
+		
+		GameModel.getInstance().add(this);
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		if(!living) {
-			gameModel.remove(this);
+			GameModel.getInstance().remove(this);
 			return;
 		}
 		

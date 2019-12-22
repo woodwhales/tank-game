@@ -20,26 +20,23 @@ public class Bullet extends GameObject {
 
 	private Dir dir;
 	
-	private GameModel gameModel;
-	
 	private boolean living = true;
 	
 	private Group group = Group.BAD;
 
-	public Bullet(int x, int y, Dir dir, Group group, GameModel gameModel) {
+	public Bullet(int x, int y, Dir dir, Group group) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.gameModel = gameModel;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-		this.gameModel.add(this);
+		GameModel.getInstance().add(this);
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		if(!living) {
-			gameModel.remove(this);
+			GameModel.getInstance().remove(this);
 			return;
 		}
 		

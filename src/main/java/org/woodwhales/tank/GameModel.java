@@ -15,9 +15,13 @@ public class GameModel {
 	
 	private static final GameModel INSTANCE = new GameModel();
 	
+	static {
+		INSTANCE.init();
+	}
+	
 	List<GameObject> objects = new ArrayList<>();
 	
-	Tank myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD, this);
+	Tank myTank = null;
 
 	CollisionerChain collisionerChain = new CollisionerChain();
 
@@ -25,19 +29,23 @@ public class GameModel {
 		return INSTANCE;
 	}
 	
-	private GameModel() {
+	private GameModel() {}
+
+	private void init() {
+		// 初始化主站坦克
+		myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD);
+		
 		int intTankCount = Integer.parseInt((String)PropertiesManager.getValue("initTankCount"));
 		
 		for (int i = 0; i < intTankCount; i++) {
-			add(new Tank(50 + i*80, 200, Dir.DOWN, Group.BAD, this));
+			new Tank(50 + i*80, 200, Dir.DOWN, Group.BAD);
 		}
 		
 		// 初始化墙
-		add(new Wall(150, 150, 200, 50));
-		add(new Wall(550, 150, 200, 50));
-		add(new Wall(300, 300, 50, 200));
-		add(new Wall(550, 400, 50, 200));
-		
+		new Wall(150, 150, 200, 50);
+		new Wall(550, 150, 200, 50);
+		new Wall(300, 300, 50, 200);
+		new Wall(550, 400, 50, 200);
 	}
 	
 	public void add(GameObject gameObject) {
