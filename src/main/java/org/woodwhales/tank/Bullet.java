@@ -4,9 +4,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class Bullet {
+@EqualsAndHashCode(callSuper=false)
+public class Bullet extends GameObject {
 
 	private static final int SPEED = 10;
 	public static int WIDTH = ResourcesManager.bulletD.getWidth();
@@ -31,12 +33,13 @@ public class Bullet {
 		this.group = group;
 		this.gameModel = gameModel;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-		this.gameModel.bullets.add(this);
+		this.gameModel.add(this);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		if(!living) {
-			gameModel.bullets.remove(this);
+			gameModel.remove(this);
 			return;
 		}
 		
@@ -82,29 +85,7 @@ public class Bullet {
 		this.rectangle.y = this.y;
 	}
 
-	/**
-	 * 子弹做碰撞检测
-	 * @param tank
-	 */
-	public void collideWith(Tank tank) {
-		if(this.group == tank.getGroup()) {
-			return;
-		}
-		
-		int tankX = tank.getX();
-		int tankY = tank.getY();
-		
-		if(this.rectangle.intersects(tank.getRectangle())) {
-			tank.die();
-			this.die();
-			
-			int eX = tankX + Tank.WIDTH/2 - Explode.WIDTH/2;
-			int eY = tankY + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-			this.gameModel.explodes.add(new Explode(eX, eY, gameModel));
-		}
-	}
-
-	private void die() {
+	public void die() {
 		this.living = false;
 	}
 

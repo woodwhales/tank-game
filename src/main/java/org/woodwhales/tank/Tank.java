@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import org.woodwhales.tank.strategy.FireStrategy;
+
 import lombok.Data;
 
 /**
@@ -13,10 +15,12 @@ import lombok.Data;
  *
  */
 @Data
-public class Tank {
+public class Tank extends GameObject {
 
 	private int x, y;
-
+	
+	private int oldX, oldY;
+	
 	private Dir dir = Dir.DOWN;
 
 	private static final int SPEED = 5;
@@ -59,12 +63,15 @@ public class Tank {
 			this.fireStrategy = (FireStrategy) Class.forName(fireStrategyClass).newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.err.print("load fireStrategyClass from config happend error!");
+			System.exit(0);
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		if(!living) {
-			gameModel.tanks.remove(this);
+			gameModel.remove(this);
 			return;
 		}
 		
@@ -115,7 +122,15 @@ public class Tank {
 	}
 
 	private void move() {
+		this.oldX = x;
+		this.oldY = y;
+		
 		if (!moving) {
+			this.x = oldX;
+			this.y = oldY;
+			this.rectangle.x = oldX;
+			this.rectangle.y = oldY;
+			this.moving = true;
 			return;
 		}
 
@@ -181,6 +196,10 @@ public class Tank {
 
 	public void die() {
 		this.living = false;
+	}
+
+	public void stop() {
+		this.moving = false;
 	}
 
 }

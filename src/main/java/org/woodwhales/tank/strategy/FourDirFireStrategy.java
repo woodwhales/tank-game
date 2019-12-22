@@ -1,4 +1,10 @@
-package org.woodwhales.tank;
+package org.woodwhales.tank.strategy;
+
+import org.woodwhales.tank.Audio;
+import org.woodwhales.tank.Bullet;
+import org.woodwhales.tank.Dir;
+import org.woodwhales.tank.Group;
+import org.woodwhales.tank.Tank;
 
 public class FourDirFireStrategy implements FireStrategy {
 

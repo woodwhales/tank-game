@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import lombok.Data;
 
 @Data
-public class Explode {
+public class Explode extends GameObject {
 
 	public static int WIDTH = ResourcesManager.explodes[0].getWidth();
 	public static int HEIGHT = ResourcesManager.explodes[0].getHeight();
@@ -25,10 +25,11 @@ public class Explode {
 		new Thread(()-> new Audio("audio/explode.wav").play()).start();
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		g.drawImage(ResourcesManager.explodes[step++], this.x, this.y, null);
 		if(step >= ResourcesManager.explodes.length) {
-			this.gameModel.explodes.remove(this);
+			this.gameModel.remove(this);
 		}
 	}
 
