@@ -12,12 +12,11 @@ public class TankTankCollisioner implements Collisioner {
 			Tank tank2 = (Tank) object2;
 			// 坦克之间碰撞，紧紧停止移动，不是撞死，所以必须返回true
 			if(tank1.getRectangle().intersects(tank2.getRectangle())) {
-				tank1.stop();
+				tank1.back();
+				tank2.back();
 			}
 		}
 		
 		return true;
-		
 	}
-	
 }

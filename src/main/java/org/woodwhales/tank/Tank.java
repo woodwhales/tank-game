@@ -122,6 +122,7 @@ public class Tank extends GameObject {
 	}
 
 	private void move() {
+		// 记录移动之前的位置
 		this.oldX = x;
 		this.oldY = y;
 		
@@ -198,6 +199,11 @@ public class Tank extends GameObject {
 		this.living = false;
 	}
 
+	public void back() {
+		this.x = oldX;
+		this.y = oldY;
+	}
+	
 	public void stop() {
 		this.moving = false;
 	}
