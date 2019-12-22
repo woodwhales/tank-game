@@ -8,18 +8,18 @@ import org.woodwhales.tank.Tank;
 public class BulletTankCollisioner implements Collisioner {
 
 	@Override
-	public boolean collision(GameObject object1, GameObject object2) {
+	public boolean collise(GameObject object1, GameObject object2) {
 		if(object1 instanceof Bullet && object2 instanceof Tank) {
 			Bullet bullet = (Bullet) object1;
 			Tank tank = (Tank) object2;
-			if(collideWith(bullet, tank)) {
+			if(isCollided(bullet, tank)) {
 				return false;
 			}
 			return true;
 		}
 		
 		if(object1 instanceof Tank && object2 instanceof Bullet) {
-			return collision(object2, object1);
+			return collise(object2, object1);
 		}
 		
 		return true;
@@ -31,7 +31,7 @@ public class BulletTankCollisioner implements Collisioner {
 	 * @param tank
 	 * @return 是否碰撞上了
 	 */
-	private boolean collideWith(Bullet bullet, Tank tank) {
+	private boolean isCollided(Bullet bullet, Tank tank) {
 		// 子弹和坦克类型一致，表示是自己的子弹或者同伴的
 		if(bullet.getGroup() == tank.getGroup()) {
 			return false;

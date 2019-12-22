@@ -38,9 +38,9 @@ public class CollisionerChain implements Collisioner {
 	}
 
 	@Override
-	public boolean collision(GameObject object1, GameObject object2) {
+	public boolean collise(GameObject object1, GameObject object2) {
 		for (Collisioner collisioner : collisioners) {
-			if(!collisioner.collision(object1, object2)) {
+			if(!collisioner.collise(object1, object2)) {
 				return false; 
 			}
 		}

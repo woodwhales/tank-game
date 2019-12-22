@@ -8,5 +8,5 @@ import org.woodwhales.tank.GameObject;
  */
 public interface Collisioner {
 
-	boolean collision(GameObject object1, GameObject object2);
+	boolean collise(GameObject object1, GameObject object2);
 }

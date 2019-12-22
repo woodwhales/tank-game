@@ -65,7 +65,7 @@ public class GameModel {
 //				这种方式不利于扩展，所以使用责任链模式
 //				collisioner1.collision(object1, object2);
 //				collisioner2.collision(object1, object2);
-				collisionerChain.collision(object1, object2);
+				collisionerChain.collise(object1, object2);
 			}
 		}
 		

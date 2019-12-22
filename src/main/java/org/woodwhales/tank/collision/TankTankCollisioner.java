@@ -6,7 +6,7 @@ import org.woodwhales.tank.Tank;
 public class TankTankCollisioner implements Collisioner {
 
 	@Override
-	public boolean collision(GameObject object1, GameObject object2) {
+	public boolean collise(GameObject object1, GameObject object2) {
 		if(object1 instanceof Tank && object2 instanceof Tank) {
 			Tank tank1 = (Tank) object1;
 			Tank tank2 = (Tank) object2;
