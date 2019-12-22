@@ -17,8 +17,6 @@ import lombok.Data;
 @Data
 public class Tank extends GameObject {
 
-	private int x, y;
-	
 	private int oldX, oldY;
 	
 	private Dir dir = Dir.DOWN;
@@ -205,6 +203,16 @@ public class Tank extends GameObject {
 	
 	public void stop() {
 		this.moving = false;
+	}
+
+	@Override
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
 	}
 
 }

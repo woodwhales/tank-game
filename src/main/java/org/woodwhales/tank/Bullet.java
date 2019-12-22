@@ -16,8 +16,6 @@ public class Bullet extends GameObject {
 
 	private Rectangle rectangle;
 	
-	private int x, y;
-
 	private Dir dir;
 	
 	private boolean living = true;
@@ -84,6 +82,16 @@ public class Bullet extends GameObject {
 
 	public void die() {
 		this.living = false;
+	}
+
+	@Override
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
 	}
 
 }
