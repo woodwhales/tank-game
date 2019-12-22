@@ -13,7 +13,7 @@ public class TankFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
 
-	GameModel gameModel = new GameModel();
+	GameModel gameModel = GameModel.getInstance();
 
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 	

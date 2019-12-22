@@ -26,7 +26,7 @@ public class BulletTankCollisioner implements Collisioner {
 	}
 	
 	/**
-	 * 子弹做碰撞检测
+	 * 子弹和坦克做碰撞检测
 	 * @param bullet
 	 * @param tank
 	 * @return 是否碰撞上了
