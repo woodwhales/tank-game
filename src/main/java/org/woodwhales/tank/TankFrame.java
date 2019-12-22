@@ -105,7 +105,12 @@ public class TankFrame extends Frame {
 					bD = false;
 					break;
 				case KeyEvent.VK_SPACE:
-					gameModel.getMainTank().fire();
+					// 主坦克处于存活状态才可以发射子弹
+					if(gameModel.getMainTank().isLiving()) {
+						gameModel.getMainTank().fire();
+					} else {
+						System.out.println("the main tank is died! please restart this game.");
+					}
 					break;
 			}
 			
