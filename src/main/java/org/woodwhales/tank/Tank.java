@@ -3,8 +3,13 @@ package org.woodwhales.tank;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
+import org.woodwhales.tank.observer.FireEvent;
+import org.woodwhales.tank.observer.FireEventObserver;
+import org.woodwhales.tank.observer.TankFireEventHandler;
 import org.woodwhales.tank.strategy.FireStrategy;
 
 import lombok.Data;
@@ -214,4 +219,12 @@ public class Tank extends GameObject {
 		return HEIGHT;
 	}
 
+	private List<FireEventObserver> fireEventObservers = Arrays.asList(new TankFireEventHandler()); 
+	public void handleFireKey() {
+		FireEvent event = new FireEvent(this);
+		for (FireEventObserver fireEventObserver : fireEventObservers) {
+			fireEventObserver.actionOnFire(event);
+		}
+	}
+	
 }
