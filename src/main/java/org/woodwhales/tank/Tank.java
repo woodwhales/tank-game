@@ -128,7 +128,6 @@ public class Tank extends GameObject {
 			this.y = oldY;
 			this.rectangle.x = oldX;
 			this.rectangle.y = oldY;
-			this.moving = true;
 			return;
 		}
 
