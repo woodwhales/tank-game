@@ -1,11 +1,11 @@
 package org.woodwhales.tank;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import lombok.Data;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
-import lombok.Data;
+import java.util.UUID;
 
 /**
  * 将tank封装 因为有多人一起玩的时候，不可能在 TankFrame 里定义n多个位置变量、方向变量等， 
@@ -38,6 +38,8 @@ public class Tank {
 
 	private Rectangle rectangle;
 	
+	private UUID id = UUID.randomUUID(); 
+	
 	public Tank(int x, int y, Dir dir, Group group, TankFrame frame) {
 		this.x = x;
 		this.y = y;
@@ -52,6 +54,11 @@ public class Tank {
 			frame.tanks.remove(this);
 			return;
 		}
+		
+		Color color = g.getColor();
+		g.setColor(Color.YELLOW);
+		g.drawString(id.toString(), this.x, this.y - 10);
+		g.setColor(color);
 		
 		switch (dir) {
 		case LEFT:
@@ -169,4 +176,19 @@ public class Tank {
 		this.living = false;
 	}
 
+	@Override
+	public String toString() {
+		return "Tank{" +
+				"x=" + x +
+				", y=" + y +
+				", dir=" + dir +
+				", living=" + living +
+				", moving=" + moving +
+				", random=" + random +
+				", group=" + group +
+				", frame=" + frame +
+				", rectangle=" + rectangle +
+				", id=" + id +
+				'}';
+	}
 }

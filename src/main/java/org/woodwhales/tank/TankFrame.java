@@ -10,21 +10,26 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class TankFrame extends Frame {
+	
+	public static final TankFrame INSTANCE = new TankFrame();
 
 	private static final long serialVersionUID = 1L;
 
 	List<Bullet> bullets = new ArrayList<>();
 	List<Tank> tanks = new ArrayList<>();
 	List<Explode> explodes = new ArrayList<>();
-	
-	Tank myTank = new Tank(200, 400, Dir.RIGHT, Group.GOOD, this);
+
+	Random random = new Random();
+
+	private Tank myTank = new Tank(random.nextInt(GAME_WIDTH), random.nextInt(GAME_HEIGHT), Dir.RIGHT, Group.GOOD, this);
 
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 	
 	public TankFrame() {
-		setVisible(true);
 		setResizable(false);
 		setTitle("tank war game");
 		setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -157,6 +162,13 @@ public class TankFrame extends Frame {
 			myTank.setMoving(false);
 		}
 	}
-	
-	
+
+	public Tank getMainTank() {
+		return myTank;
+	}
+
+	public Tank findByUUID(UUID id) {
+		return null;
+	}
+
 }
