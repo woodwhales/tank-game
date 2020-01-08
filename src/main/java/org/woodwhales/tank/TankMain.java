@@ -27,7 +27,7 @@ public class TankMain {
 			}
 		}).start();
 		
-		Client client = new Client();
+		Client client = Client.getInstance();
 		client.connect();
 	}
 

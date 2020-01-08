@@ -1,8 +1,5 @@
 package org.woodwhales.tank.net;
 
-import java.util.Objects;
-
-import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 
 import io.netty.bootstrap.Bootstrap;
@@ -23,7 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 public class Client {
 
     private Channel channel = null;
+    
+    public static Client getInstance() {
+    	return new Client();
+    }
 
+    private Client() {}
+    
     public void connect() {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
@@ -58,6 +61,10 @@ public class Client {
         }
     }
 
+    public void send(TankStateMsg msg) {
+    	channel.writeAndFlush(msg);
+    }
+    
     public void send(String message) {
         ByteBuf buf = Unpooled.copiedBuffer(message.getBytes());
         channel.writeAndFlush(buf);
@@ -89,17 +96,7 @@ class ClientHandler extends SimpleChannelInboundHandler<TankStateMsg> {
 	@Override
     public void channelRead0(ChannelHandlerContext ctx, TankStateMsg msg) throws Exception {
         log.info("client --> {}", msg);
-        
-        // 接收到的消息是client自己发送的消息
-        // 或者接收到的client已经加入了 TankFrame的 敌人tank列表里
-        if(TankFrame.INSTANCE.getMainTank().getId().equals(msg.id)
-        		|| Objects.nonNull(TankFrame.INSTANCE.findByUIUID(msg.id))) {
-        	return;
-        }
-        
-        Tank tank = new Tank(msg);
-        TankFrame.INSTANCE.addTank(tank);
-        ctx.writeAndFlush(new TankStateMsg(TankFrame.INSTANCE.getMainTank()));
+        msg.handle();
         
 	}
 

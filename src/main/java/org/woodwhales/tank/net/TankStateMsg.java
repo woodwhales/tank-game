@@ -9,8 +9,9 @@ import java.util.UUID;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;
 import org.woodwhales.tank.Tank;
+import org.woodwhales.tank.TankFrame;
 
-public class TankStateMsg {
+public class TankStateMsg extends BaseTankStateMsg {
     public int x, y;
     public Dir dir;
     public boolean moving;
@@ -26,6 +27,7 @@ public class TankStateMsg {
         this.id = tank.getId();
     }
     
+    @Override
     public byte[] toBytes() {
     	ByteArrayOutputStream byteArrayOutputStream = null;
     	DataOutputStream dataOutputStream = null;
@@ -86,6 +88,21 @@ public class TankStateMsg {
 	public String toString() {
 		return "TankStateMsg [x=" + x + ", y=" + y + ", dir=" + dir + ", moving=" + moving + ", group=" + group
 				+ ", id=" + id + "]";
+	}
+
+	@Override
+	public void handle() {
+		// 接收到的消息是client自己发送的消息
+        // 或者接收到的client已经加入了 TankFrame的 敌人tank列表里
+		if(TankFrame.INSTANCE.getMainTank().getId().equals(this.id)
+        		|| Objects.nonNull(TankFrame.INSTANCE.findByUIUID(this.id))) {
+        	return;
+        }
+        
+        Tank tank = new Tank(this);
+        TankFrame.INSTANCE.addTank(tank);
+        Client.getInstance().send(this);
+		
 	}
 
 }
