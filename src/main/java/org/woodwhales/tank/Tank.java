@@ -32,7 +32,7 @@ public class Tank {
 	private boolean living = true;
 
 	// tank是否为移动状态
-	private boolean moving = true;
+	private boolean moving = false;
 
 	private Random random = new Random();
 	

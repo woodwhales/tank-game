@@ -1,5 +1,7 @@
 package org.woodwhales.tank.net;
 
+import java.util.Objects;
+
 import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 
@@ -87,10 +89,18 @@ class ClientHandler extends SimpleChannelInboundHandler<TankStateMsg> {
 	@Override
     public void channelRead0(ChannelHandlerContext ctx, TankStateMsg msg) throws Exception {
         log.info("client --> {}", msg);
-        Tank tank = new Tank(msg);
-        if(!tank.getId().equals(TankFrame.INSTANCE.getMainTank().getId())) {
-        	TankFrame.INSTANCE.addTank(tank);
+        
+        // 接收到的消息是client自己发送的消息
+        // 或者接收到的client已经加入了 TankFrame的 敌人tank列表里
+        if(TankFrame.INSTANCE.getMainTank().getId().equals(msg.id)
+        		|| Objects.nonNull(TankFrame.INSTANCE.findByUIUID(msg.id))) {
+        	return;
         }
+        
+        Tank tank = new Tank(msg);
+        TankFrame.INSTANCE.addTank(tank);
+        ctx.writeAndFlush(new TankStateMsg(TankFrame.INSTANCE.getMainTank()));
+        
 	}
 
     

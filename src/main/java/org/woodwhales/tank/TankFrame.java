@@ -9,7 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,17 +22,21 @@ public class TankFrame extends Frame {
 	private static final long serialVersionUID = 1L;
 
 	List<Bullet> bullets = new ArrayList<>();
-	List<Tank> tanks = new ArrayList<>();
+	Map<UUID, Tank> tanks = new HashMap<>();
 	List<Explode> explodes = new ArrayList<>();
 
 	Random random = new Random();
 
-	private Tank myTank = new Tank(random.nextInt(GAME_WIDTH), random.nextInt(GAME_HEIGHT), Dir.RIGHT, Group.GOOD, this);
+	private Tank myTank = new Tank(random.nextInt(GAME_WIDTH-Tank.WIDTH), random.nextInt(GAME_HEIGHT-Tank.HEIGHT), Dir.RIGHT, Group.GOOD, this);
 
 	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 	
 	public void addTank(Tank tank) {
-		this.tanks.add(tank);
+		this.tanks.put(tank.getId(), tank);
+	}
+	
+	public Tank findByUIUID(UUID id) {
+		return this.tanks.get(id);
 	}
 	
 	public TankFrame() {
@@ -76,9 +82,7 @@ public class TankFrame extends Frame {
 		
 		myTank.paint(g);
 		
-		for(int i = 0; i < tanks.size(); i++) {
-			tanks.get(i).paint(g);
-		}
+		this.tanks.values().stream().forEach(tank -> tank.paint(g));
 		
 		for(int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).paint(g);
