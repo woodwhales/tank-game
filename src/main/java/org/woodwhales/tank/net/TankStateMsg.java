@@ -21,6 +21,7 @@ public class TankStateMsg {
         this.x = tank.getX();
         this.y = tank.getY();
         this.dir = tank.getDir();
+        this.moving = tank.isMoving();
         this.group = tank.getGroup();
         this.id = tank.getId();
     }

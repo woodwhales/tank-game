@@ -1,5 +1,6 @@
 package org.woodwhales.tank.net;
 
+import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 
 import io.netty.bootstrap.Bootstrap;
@@ -15,6 +16,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 public class Client {
 
@@ -74,6 +76,7 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
     }
 }
 
+@Slf4j
 class ClientHandler extends SimpleChannelInboundHandler<TankStateMsg> {
 
 	@Override
@@ -83,7 +86,11 @@ class ClientHandler extends SimpleChannelInboundHandler<TankStateMsg> {
 	
 	@Override
     public void channelRead0(ChannelHandlerContext ctx, TankStateMsg msg) throws Exception {
-        System.out.println(msg);
+        log.info("client --> {}", msg);
+        Tank tank = new Tank(msg);
+        if(!tank.getId().equals(TankFrame.INSTANCE.getMainTank().getId())) {
+        	TankFrame.INSTANCE.addTank(tank);
+        }
 	}
 
     

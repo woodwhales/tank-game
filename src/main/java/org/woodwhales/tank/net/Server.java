@@ -12,6 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.extern.slf4j.Slf4j;
 
 public class Server {
     public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -29,7 +30,8 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
-                                .addLast(new TankStateMsgDecoder())
+	                            .addLast(new TankStateMsgEncoder())
+	                            .addLast(new TankStateMsgDecoder())
                                 .addLast(new ServerChildHandler());
                         }
                     })
@@ -49,6 +51,7 @@ public class Server {
     }
 }
 
+@Slf4j
 class ServerChildHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -57,6 +60,7 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    	log.info("server --> {}", msg);
         Server.clients.writeAndFlush(msg);
     }
 

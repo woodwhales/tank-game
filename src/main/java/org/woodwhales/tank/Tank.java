@@ -1,11 +1,15 @@
 package org.woodwhales.tank;
 
-import lombok.Data;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.UUID;
+
+import org.woodwhales.tank.net.TankStateMsg;
+
+import lombok.Data;
 
 /**
  * 将tank封装 因为有多人一起玩的时候，不可能在 TankFrame 里定义n多个位置变量、方向变量等， 
@@ -46,6 +50,16 @@ public class Tank {
 		this.dir = dir;
 		this.group = group;
 		this.frame = frame;
+		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+	}
+
+	public Tank(TankStateMsg tankStateMsg) {
+		this.x = tankStateMsg.x;
+		this.y = tankStateMsg.y;
+		this.dir = tankStateMsg.dir;
+		this.moving = tankStateMsg.moving;
+		this.group = tankStateMsg.group;
+		this.id = tankStateMsg.id;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 
