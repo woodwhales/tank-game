@@ -7,6 +7,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;
+import org.woodwhales.tank.net.tankjoin.TankJoinMsg;
+import org.woodwhales.tank.net.tankjoin.TankJoinMsgDecoder;
+import org.woodwhales.tank.net.tankjoin.TankJoinMsgEncoder;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -25,6 +28,15 @@ public class TankMsgCodecTest {
         channel.writeOutbound(tank);
 
         ByteBuf buf = (ByteBuf)channel.readOutbound();
+        
+        MsgType msgType = MsgType.values()[buf.readInt()];
+        
+        assertEquals(MsgType.TankJoin, msgType);
+        
+        int length = buf.readInt();
+        
+        assertEquals(33, length);
+        
         int x = buf.readInt(); // 4 字节
         int y = buf.readInt(); // 4 字节
         Dir dir = Dir.values()[buf.readInt()]; // 4 字节
@@ -51,9 +63,13 @@ public class TankMsgCodecTest {
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new TankJoinMsgDecoder());
         
-        
         ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(msg.toBytes());
+        buf.writeInt(MsgType.TankJoin.ordinal());
+        byte[] bytes = msg.toBytes();
+        int length = bytes.length;
+        
+        buf.writeInt(length);
+        buf.writeBytes(bytes);
         channel.writeInbound(buf.duplicate());
 
         TankJoinMsg tankStateMsg = (TankJoinMsg)channel.readInbound();

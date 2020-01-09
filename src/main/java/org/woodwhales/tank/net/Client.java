@@ -1,6 +1,9 @@
 package org.woodwhales.tank.net;
 
 import org.woodwhales.tank.TankFrame;
+import org.woodwhales.tank.net.tankjoin.TankJoinMsg;
+import org.woodwhales.tank.net.tankjoin.TankJoinMsgDecoder;
+import org.woodwhales.tank.net.tankjoin.TankJoinMsgEncoder;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -17,14 +20,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Client {
 
     private Channel channel = null;
     
-    public static Client getInstance() {
-    	return new Client();
-    }
-
+    public static final Client INSTANCE = new Client();
+    
     private Client() {}
     
     public void connect() {
@@ -41,11 +43,11 @@ public class Client {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if(future.isSuccess()) {
-                        System.out.println("this client connected to server!");
+                        log.info("this client connected to server!");
                         // 成功连接服务器时初始化 channel
                         channel = future.channel();
                     } else {
-                        System.out.println("this client not connected to server!");
+                    	log.error("this client not connected to server!");
                     }
 
                 }
@@ -61,7 +63,7 @@ public class Client {
         }
     }
 
-    public void send(TankJoinMsg msg) {
+    public void send(BaseMsg msg) {
     	channel.writeAndFlush(msg);
     }
     
@@ -97,8 +99,6 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
     public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
         log.info("client --> {}", msg);
         msg.handle();
-        
 	}
 
-    
 }

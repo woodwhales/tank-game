@@ -1,6 +1,8 @@
-package org.woodwhales.tank.net;
+package org.woodwhales.tank.net.tankjoin;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
@@ -10,6 +12,9 @@ import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;
 import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
+import org.woodwhales.tank.net.BaseMsg;
+import org.woodwhales.tank.net.Client;
+import org.woodwhales.tank.net.MsgType;
 
 public class TankJoinMsg extends BaseMsg {
     public int x, y;
@@ -98,11 +103,39 @@ public class TankJoinMsg extends BaseMsg {
         		|| Objects.nonNull(TankFrame.INSTANCE.findByUIUID(this.id))) {
         	return;
         }
-        
+		
         Tank tank = new Tank(this);
         TankFrame.INSTANCE.addTank(tank);
-        Client.getInstance().send(this);
+        Client.INSTANCE.send(this);
 		
+	}
+
+	@Override
+	public void parse(byte[] bytes) {
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
+		
+		try {
+			this.x = dis.readInt();
+			this.y = dis.readInt();
+			this.dir = Dir.values()[dis.readInt()];
+			this.moving = dis.readBoolean();
+			this.group = Group.values()[dis.readInt()];
+			this.id = new UUID(dis.readLong(), dis.readLong());
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		} finally {
+			try {
+				dis.close();
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	public MsgType getMsgType() {
+		return MsgType.TankJoin;
 	}
 
 }
