@@ -106,7 +106,7 @@ public class TankJoinMsg extends BaseMsg {
 		
         Tank tank = new Tank(this);
         TankFrame.INSTANCE.addTank(tank);
-        Client.INSTANCE.send(this);
+        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
 		
 	}
 
