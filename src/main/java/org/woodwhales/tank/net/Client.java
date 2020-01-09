@@ -61,7 +61,7 @@ public class Client {
         }
     }
 
-    public void send(TankStateMsg msg) {
+    public void send(TankJoinMsg msg) {
     	channel.writeAndFlush(msg);
     }
     
@@ -79,22 +79,22 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline()
-            .addLast(new TankStateMsgEncoder())
-            .addLast(new TankStateMsgDecoder())
+            .addLast(new TankJoinMsgEncoder())
+            .addLast(new TankJoinMsgDecoder())
             .addLast(new ClientHandler());
     }
 }
 
 @Slf4j
-class ClientHandler extends SimpleChannelInboundHandler<TankStateMsg> {
+class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ctx.writeAndFlush(new TankStateMsg(TankFrame.INSTANCE.getMainTank()));
+		ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
 	}
 	
 	@Override
-    public void channelRead0(ChannelHandlerContext ctx, TankStateMsg msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
         log.info("client --> {}", msg);
         msg.handle();
         

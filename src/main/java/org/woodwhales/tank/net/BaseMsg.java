@@ -1,6 +1,6 @@
 package org.woodwhales.tank.net;
 
-public abstract class BaseTankStateMsg {
+public abstract class BaseMsg {
 	
 	public abstract void handle();
 	

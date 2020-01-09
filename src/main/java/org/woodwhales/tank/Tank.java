@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.UUID;
 
-import org.woodwhales.tank.net.TankStateMsg;
+import org.woodwhales.tank.net.TankJoinMsg;
 
 import lombok.Data;
 
@@ -53,13 +53,13 @@ public class Tank {
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 
-	public Tank(TankStateMsg tankStateMsg) {
-		this.x = tankStateMsg.x;
-		this.y = tankStateMsg.y;
-		this.dir = tankStateMsg.dir;
-		this.moving = tankStateMsg.moving;
-		this.group = tankStateMsg.group;
-		this.id = tankStateMsg.id;
+	public Tank(TankJoinMsg msg) {
+		this.x = msg.x;
+		this.y = msg.y;
+		this.dir = msg.dir;
+		this.moving = msg.moving;
+		this.group = msg.group;
+		this.id = msg.id;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 

@@ -15,12 +15,12 @@ import io.netty.channel.embedded.EmbeddedChannel;
 public class TankMsgCodecTest {
 
     @Test
-    public void testTankStateMsgEncoder() {
+    public void testTankJoinMsgEncoder() {
     	UUID id = UUID.randomUUID();
-    	TankStateMsg tank = new TankStateMsg(10, 10, Dir.DOWN, false, Group.GOOD, id);
+    	TankJoinMsg tank = new TankJoinMsg(10, 10, Dir.DOWN, false, Group.GOOD, id);
     	
         EmbeddedChannel channel = new EmbeddedChannel();
-        channel.pipeline().addLast(new TankStateMsgEncoder());
+        channel.pipeline().addLast(new TankJoinMsgEncoder());
         
         channel.writeOutbound(tank);
 
@@ -44,19 +44,19 @@ public class TankMsgCodecTest {
 
 
     @Test
-    public void testTankStateMsgDecoder() {
+    public void testTankJoinMsgDecoder() {
     	UUID id = UUID.randomUUID();
-    	TankStateMsg msg = new TankStateMsg(5, 10, Dir.UP, false, Group.BAD, id);
+    	TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.UP, false, Group.BAD, id);
 
         EmbeddedChannel channel = new EmbeddedChannel();
-        channel.pipeline().addLast(new TankStateMsgDecoder());
+        channel.pipeline().addLast(new TankJoinMsgDecoder());
         
         
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(msg.toBytes());
         channel.writeInbound(buf.duplicate());
 
-        TankStateMsg tankStateMsg = (TankStateMsg)channel.readInbound();
+        TankJoinMsg tankStateMsg = (TankJoinMsg)channel.readInbound();
         
         assertEquals(5, tankStateMsg.x);
         assertEquals(10, tankStateMsg.y);

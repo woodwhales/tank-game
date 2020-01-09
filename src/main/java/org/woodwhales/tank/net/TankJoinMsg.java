@@ -11,14 +11,14 @@ import org.woodwhales.tank.Group;
 import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
 
-public class TankStateMsg extends BaseTankStateMsg {
+public class TankJoinMsg extends BaseMsg {
     public int x, y;
     public Dir dir;
     public boolean moving;
     public Group group;
     public UUID id;
     
-    public TankStateMsg(Tank tank) {
+    public TankJoinMsg(Tank tank) {
         this.x = tank.getX();
         this.y = tank.getY();
         this.dir = tank.getDir();
@@ -70,11 +70,11 @@ public class TankStateMsg extends BaseTankStateMsg {
     	return bytes;
     }
     
-	public TankStateMsg() {
+	public TankJoinMsg() {
 		super();
 	}
 
-	public TankStateMsg(int x, int y, Dir dir, boolean moving, Group group, UUID id) {
+	public TankJoinMsg(int x, int y, Dir dir, boolean moving, Group group, UUID id) {
 		super();
 		this.x = x;
 		this.y = y;

@@ -10,7 +10,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
-public class TankStateMsgDecoder extends ByteToMessageDecoder {
+public class TankJoinMsgDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         System.out.println(in.readableBytes());
@@ -19,7 +19,7 @@ public class TankStateMsgDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        TankStateMsg tankStateMsg = new TankStateMsg();
+        TankJoinMsg tankStateMsg = new TankJoinMsg();
         
         // in.markReaderIndex();
         tankStateMsg.x = in.readInt(); // 4 字节
