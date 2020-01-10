@@ -1,4 +1,6 @@
-package org.woodwhales.tank.net;
+package org.woodwhales.tank.net.msg;
+
+import org.woodwhales.tank.net.MsgType;
 
 public abstract class BaseMsg {
 	

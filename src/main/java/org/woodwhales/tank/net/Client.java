@@ -1,9 +1,10 @@
 package org.woodwhales.tank.net;
 
 import org.woodwhales.tank.TankFrame;
-import org.woodwhales.tank.net.tankjoin.TankJoinMsg;
-import org.woodwhales.tank.net.tankjoin.TankJoinMsgDecoder;
-import org.woodwhales.tank.net.tankjoin.TankJoinMsgEncoder;
+import org.woodwhales.tank.net.msg.BaseMsg;
+import org.woodwhales.tank.net.msg.TankJoinMsg;
+import org.woodwhales.tank.net.msg.MsgDecoder;
+import org.woodwhales.tank.net.msg.MsgEncoder;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -81,8 +82,8 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline()
-            .addLast(new TankJoinMsgEncoder())
-            .addLast(new TankJoinMsgDecoder())
+            .addLast(new MsgEncoder())
+            .addLast(new MsgDecoder())
             .addLast(new ClientHandler());
     }
 }

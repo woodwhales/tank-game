@@ -1,4 +1,4 @@
-package org.woodwhales.tank.net.tankjoin;
+package org.woodwhales.tank.net.msg;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +12,6 @@ import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;
 import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
-import org.woodwhales.tank.net.BaseMsg;
 import org.woodwhales.tank.net.Client;
 import org.woodwhales.tank.net.MsgType;
 

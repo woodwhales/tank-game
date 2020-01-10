@@ -7,9 +7,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;
-import org.woodwhales.tank.net.tankjoin.TankJoinMsg;
-import org.woodwhales.tank.net.tankjoin.TankJoinMsgDecoder;
-import org.woodwhales.tank.net.tankjoin.TankJoinMsgEncoder;
+import org.woodwhales.tank.net.msg.TankJoinMsg;
+import org.woodwhales.tank.net.msg.MsgDecoder;
+import org.woodwhales.tank.net.msg.MsgEncoder;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -23,7 +23,7 @@ public class TankMsgCodecTest {
     	TankJoinMsg tank = new TankJoinMsg(10, 10, Dir.DOWN, false, Group.GOOD, id);
     	
         EmbeddedChannel channel = new EmbeddedChannel();
-        channel.pipeline().addLast(new TankJoinMsgEncoder());
+        channel.pipeline().addLast(new MsgEncoder());
         
         channel.writeOutbound(tank);
 
@@ -61,7 +61,7 @@ public class TankMsgCodecTest {
     	TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.UP, false, Group.BAD, id);
 
         EmbeddedChannel channel = new EmbeddedChannel();
-        channel.pipeline().addLast(new TankJoinMsgDecoder());
+        channel.pipeline().addLast(new MsgDecoder());
         
         ByteBuf buf = Unpooled.buffer();
         buf.writeInt(MsgType.TankJoin.ordinal());

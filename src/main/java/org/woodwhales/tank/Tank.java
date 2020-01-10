@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.UUID;
 
-import org.woodwhales.tank.net.tankjoin.TankJoinMsg;
+import org.woodwhales.tank.net.msg.TankJoinMsg;
 
 import lombok.Data;
 
