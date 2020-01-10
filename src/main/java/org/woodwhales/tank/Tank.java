@@ -54,12 +54,12 @@ public class Tank {
 	}
 
 	public Tank(TankJoinMsg msg) {
-		this.x = msg.x;
-		this.y = msg.y;
-		this.dir = msg.dir;
-		this.moving = msg.moving;
-		this.group = msg.group;
-		this.id = msg.id;
+		this.x = msg.getX();
+		this.y = msg.getY();
+		this.dir = msg.getDir();
+		this.moving = msg.isMoving();
+		this.group = msg.getGroup();
+		this.id = msg.getId();
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 
@@ -190,19 +190,4 @@ public class Tank {
 		this.living = false;
 	}
 
-	@Override
-	public String toString() {
-		return "Tank{" +
-				"x=" + x +
-				", y=" + y +
-				", dir=" + dir +
-				", living=" + living +
-				", moving=" + moving +
-				", random=" + random +
-				", group=" + group +
-				", frame=" + frame +
-				", rectangle=" + rectangle +
-				", id=" + id +
-				'}';
-	}
 }

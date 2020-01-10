@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import org.woodwhales.tank.net.Client;
+import org.woodwhales.tank.net.msg.TankStartMovingMsg;
+
 public class TankFrame extends Frame {
 	
 	public static final TankFrame INSTANCE = new TankFrame();
@@ -164,6 +167,8 @@ public class TankFrame extends Frame {
 				if(bU) myTank.setDir(Dir.UP);
 				if(bR) myTank.setDir(Dir.RIGHT);
 				if(bD) myTank.setDir(Dir.DOWN);
+				
+				Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
 				return;
 			}
 			
@@ -176,7 +181,7 @@ public class TankFrame extends Frame {
 	}
 
 	public Tank findByUUID(UUID id) {
-		return null;
+		return tanks.get(id);
 	}
 
 }

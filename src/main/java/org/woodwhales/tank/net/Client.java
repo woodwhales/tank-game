@@ -2,9 +2,9 @@ package org.woodwhales.tank.net;
 
 import org.woodwhales.tank.TankFrame;
 import org.woodwhales.tank.net.msg.BaseMsg;
-import org.woodwhales.tank.net.msg.TankJoinMsg;
 import org.woodwhales.tank.net.msg.MsgDecoder;
 import org.woodwhales.tank.net.msg.MsgEncoder;
+import org.woodwhales.tank.net.msg.TankJoinMsg;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -89,7 +89,7 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
 }
 
 @Slf4j
-class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
+class ClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -97,7 +97,7 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
 	}
 	
 	@Override
-    public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, BaseMsg msg) throws Exception {
         log.info("client --> {}", msg);
         msg.handle();
 	}

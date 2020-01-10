@@ -9,10 +9,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.woodwhales.tank.Dir;
-import org.woodwhales.tank.Group;
 import org.woodwhales.tank.Tank;
 import org.woodwhales.tank.TankFrame;
-import org.woodwhales.tank.net.Client;
 import org.woodwhales.tank.net.MsgType;
 
 import lombok.AllArgsConstructor;
@@ -24,25 +22,39 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class TankJoinMsg extends BaseMsg {
-    private int x, y;
-    private Dir dir;
-    private boolean moving;
-    private Group group;
-    private UUID id;
-    
-    public TankJoinMsg(Tank tank) {
-        this.x = tank.getX();
-        this.y = tank.getY();
-        this.dir = tank.getDir();
-        this.moving = tank.isMoving();
-        this.group = tank.getGroup();
-        this.id = tank.getId();
-    }
-    
-    @Override
-    public byte[] toBytes() {
-    	ByteArrayOutputStream byteArrayOutputStream = null;
+public class TankStartMovingMsg extends BaseMsg {
+	
+	private UUID id;
+	
+	private int x, y;
+	
+	private Dir dir;
+	
+	public TankStartMovingMsg(Tank tank) {
+		this.id = tank.getId();
+		this.x = tank.getX();
+		this.y = tank.getY();
+		this.dir = tank.getDir();
+	}
+	
+	@Override
+	public void handle() {
+		if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId())) {
+			return;
+		}
+
+		Tank tank = TankFrame.INSTANCE.findByUUID(this.id);
+		if (Objects.nonNull(tank)) {
+			tank.setMoving(true);
+			tank.setX(this.x);
+			tank.setY(this.y);
+			tank.setDir(this.dir);
+		}
+	}
+
+	@Override
+	public byte[] toBytes() {
+		ByteArrayOutputStream byteArrayOutputStream = null;
     	DataOutputStream dataOutputStream = null;
     	byte[] bytes = null;
     	
@@ -50,13 +62,11 @@ public class TankJoinMsg extends BaseMsg {
 			byteArrayOutputStream = new ByteArrayOutputStream();
 			dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 			
+			dataOutputStream.writeLong(id.getMostSignificantBits());
+			dataOutputStream.writeLong(id.getLeastSignificantBits());
 			dataOutputStream.writeInt(x);
 			dataOutputStream.writeInt(y);
 			dataOutputStream.writeInt(dir.ordinal());
-			dataOutputStream.writeBoolean(moving);
-			dataOutputStream.writeInt(group.ordinal());
-			dataOutputStream.writeLong(id.getMostSignificantBits());
-			dataOutputStream.writeLong(id.getLeastSignificantBits());
 			dataOutputStream.flush();
 			bytes = byteArrayOutputStream.toByteArray();
 		} catch (Exception exception) {
@@ -81,20 +91,6 @@ public class TankJoinMsg extends BaseMsg {
 		}
     	
     	return bytes;
-    }
-    
-	@Override
-	public void handle() {
-		// 接收到的消息是client自己发送的消息
-        // 或者接收到的client已经加入了 TankFrame的 敌人tank列表里
-		if(TankFrame.INSTANCE.getMainTank().getId().equals(this.id)
-        		|| Objects.nonNull(TankFrame.INSTANCE.findByUIUID(this.id))) {
-        	return;
-        }
-		
-        Tank tank = new Tank(this);
-        TankFrame.INSTANCE.addTank(tank);
-        Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
 	}
 
 	@Override
@@ -102,12 +98,10 @@ public class TankJoinMsg extends BaseMsg {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 		
 		try {
+			this.id = new UUID(dis.readLong(), dis.readLong());
 			this.x = dis.readInt();
 			this.y = dis.readInt();
 			this.dir = Dir.values()[dis.readInt()];
-			this.moving = dis.readBoolean();
-			this.group = Group.values()[dis.readInt()];
-			this.id = new UUID(dis.readLong(), dis.readLong());
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		} finally {
@@ -122,7 +116,7 @@ public class TankJoinMsg extends BaseMsg {
 
 	@Override
 	public MsgType getMsgType() {
-		return MsgType.TankJoin;
+		return MsgType.TankStartMoving;
 	}
 
 }

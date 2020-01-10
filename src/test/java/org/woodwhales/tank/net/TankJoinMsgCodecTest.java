@@ -7,20 +7,26 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.woodwhales.tank.Dir;
 import org.woodwhales.tank.Group;
-import org.woodwhales.tank.net.msg.TankJoinMsg;
 import org.woodwhales.tank.net.msg.MsgDecoder;
 import org.woodwhales.tank.net.msg.MsgEncoder;
+import org.woodwhales.tank.net.msg.TankJoinMsg;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
 
-public class TankMsgCodecTest {
+public class TankJoinMsgCodecTest {
 
     @Test
     public void testTankJoinMsgEncoder() {
     	UUID id = UUID.randomUUID();
-    	TankJoinMsg tank = new TankJoinMsg(10, 10, Dir.DOWN, false, Group.GOOD, id);
+    	int x = 20;
+    	int y = 10;
+    	Dir dir = Dir.LEFT;
+    	boolean moving = false;
+    	Group group = Group.GOOD;
+    	
+    	TankJoinMsg tank = new TankJoinMsg(x, y, dir, moving, group, id);
     	
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new MsgEncoder());
@@ -37,18 +43,18 @@ public class TankMsgCodecTest {
         
         assertEquals(33, length);
         
-        int x = buf.readInt(); // 4 字节
-        int y = buf.readInt(); // 4 字节
-        Dir dir = Dir.values()[buf.readInt()]; // 4 字节
-        boolean moving = buf.readBoolean(); // 1 字节
-        Group group = Group.values()[buf.readInt()]; // 4 字节
+        int res_x = buf.readInt(); // 4 字节
+        int res_y = buf.readInt(); // 4 字节
+        Dir res_dir = Dir.values()[buf.readInt()]; // 4 字节
+        boolean res_moving = buf.readBoolean(); // 1 字节
+        Group res_group = Group.values()[buf.readInt()]; // 4 字节
         UUID uuid = new UUID(buf.readLong(), buf.readLong()); // 16 字节
         
-        assertEquals(10, x);
-        assertEquals(10, y);
-        assertEquals(Dir.DOWN, dir);
-        assertEquals(false, moving);
-        assertEquals(Group.GOOD, group);
+        assertEquals(x, res_x);
+        assertEquals(y, res_y);
+        assertEquals(dir, res_dir);
+        assertEquals(moving, res_moving);
+        assertEquals(group, res_group);
         assertEquals(id, uuid);
     
         buf.release();
@@ -58,7 +64,13 @@ public class TankMsgCodecTest {
     @Test
     public void testTankJoinMsgDecoder() {
     	UUID id = UUID.randomUUID();
-    	TankJoinMsg msg = new TankJoinMsg(5, 10, Dir.UP, false, Group.BAD, id);
+    	int x = 5;
+    	int y = 10;
+    	Dir dir = Dir.DOWN;
+    	boolean moving = false;
+    	Group group = Group.BAD;
+    	
+    	TankJoinMsg msg = new TankJoinMsg(x, y, dir, moving, group, id);
 
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new MsgDecoder());
@@ -74,12 +86,12 @@ public class TankMsgCodecTest {
 
         TankJoinMsg tankStateMsg = (TankJoinMsg)channel.readInbound();
         
-        assertEquals(5, tankStateMsg.x);
-        assertEquals(10, tankStateMsg.y);
-        assertEquals(Dir.UP, tankStateMsg.dir);
-        assertEquals(false, tankStateMsg.moving);
-        assertEquals(Group.BAD, tankStateMsg.group);
-        assertEquals(id, tankStateMsg.id);
+        assertEquals(x, tankStateMsg.getX());
+        assertEquals(y, tankStateMsg.getY());
+        assertEquals(dir, tankStateMsg.getDir());
+        assertEquals(moving, tankStateMsg.isMoving());
+        assertEquals(group, tankStateMsg.getGroup());
+        assertEquals(id, tankStateMsg.getId());
 
     }
 }
