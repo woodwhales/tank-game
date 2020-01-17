@@ -16,6 +16,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.woodwhales.tank.net.Client;
+import org.woodwhales.tank.net.msg.TankDirChangedMsg;
 import org.woodwhales.tank.net.msg.TankStartMovingMsg;
 import org.woodwhales.tank.net.msg.TankStopMsg;
 
@@ -37,6 +38,10 @@ public class TankFrame extends Frame {
 	
 	public void addTank(Tank tank) {
 		this.tanks.put(tank.getId(), tank);
+	}
+	
+	public void removeTank(Tank tank) {
+		this.tanks.remove(tank.getId());
 	}
 	
 	public Tank findByUIUID(UUID id) {
@@ -162,7 +167,9 @@ public class TankFrame extends Frame {
 		// 根据键盘的按键情况，改变方向
 		private void setMainTankDir() {
 			
-			// 当前坦克创建有按方向键
+			Dir dir = myTank.getDir(); 
+			
+			// 当前坦克创建有摁方向键
 			if(bL || bU || bR || bD) {
 				
 				// 改变tank的方向
@@ -177,6 +184,10 @@ public class TankFrame extends Frame {
 				} 
 
 				myTank.setMoving(true);
+				
+				if(dir != myTank.getDir()) {
+					Client.INSTANCE.send(new TankDirChangedMsg(getMainTank()));
+				}
 				return;
 			}
 			

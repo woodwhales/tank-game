@@ -9,7 +9,9 @@ import java.awt.event.WindowEvent;
 
 public class ServerFrame extends Frame {
 
-    public static final ServerFrame INSTANCE = new ServerFrame();
+	private static final long serialVersionUID = 1L;
+
+	public static final ServerFrame INSTANCE = new ServerFrame();
 
     TextArea taLeft = new TextArea();
     TextArea taRight = new TextArea();

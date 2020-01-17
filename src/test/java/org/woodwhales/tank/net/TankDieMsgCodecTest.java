@@ -7,23 +7,21 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.woodwhales.tank.net.msg.MsgDecoder;
 import org.woodwhales.tank.net.msg.MsgEncoder;
-import org.woodwhales.tank.net.msg.TankStopMsg;
+import org.woodwhales.tank.net.msg.TankDieMsg;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
 
-public class TankStopMsgCodecTest {
+public class TankDieMsgCodecTest {
 
-	private MsgType msgType = MsgType.TankStop;
+	private MsgType msgType = MsgType.TankDie;
 	
     @Test
-    public void testTankStopMsgEncoder() {
+    public void testTankDieMsgEncoder() {
     	UUID id = UUID.randomUUID();
-    	int x = 40;
-    	int y = 10;
     	
-    	TankStopMsg tank = new TankStopMsg(x, y, id);
+    	TankDieMsg tank = new TankDieMsg(id);
     	
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new MsgEncoder());
@@ -38,14 +36,10 @@ public class TankStopMsgCodecTest {
         
         int length = buf.readInt();
         
-        assertEquals(24, length);
+        assertEquals(16, length);
         
         UUID uuid = new UUID(buf.readLong(), buf.readLong()); // 16 字节
-        int res_x = buf.readInt(); // 4 字节
-        int res_y = buf.readInt(); // 4 字节
         
-        assertEquals(x, res_x);
-        assertEquals(y, res_y);
         assertEquals(id, uuid);
     
         buf.release();
@@ -53,12 +47,10 @@ public class TankStopMsgCodecTest {
 
 
     @Test
-    public void testTankStopMsgDecoder() {
+    public void testTankDieMsgDecoder() {
     	UUID id = UUID.randomUUID();
-    	int x = 5;
-    	int y = 10;
     	
-    	TankStopMsg msg = new TankStopMsg(x, y, id);
+    	TankDieMsg msg = new TankDieMsg(id);
 
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new MsgDecoder());
@@ -72,11 +64,9 @@ public class TankStopMsgCodecTest {
         buf.writeBytes(bytes);
         channel.writeInbound(buf.duplicate());
 
-        TankStopMsg tankStopMsg = (TankStopMsg)channel.readInbound();
+        TankDieMsg tankDieMsg = (TankDieMsg)channel.readInbound();
         
-        assertEquals(x, tankStopMsg.getX());
-        assertEquals(y, tankStopMsg.getY());
-        assertEquals(id, tankStopMsg.getId());
+        assertEquals(id, tankDieMsg.getId());
 
     }
 }

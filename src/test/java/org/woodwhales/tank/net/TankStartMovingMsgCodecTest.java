@@ -15,6 +15,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
 
 public class TankStartMovingMsgCodecTest {
+	
+	private MsgType msgType = MsgType.TankStartMoving;
 
     @Test
     public void testTankStartMovingMsgEncoder() {
@@ -34,7 +36,7 @@ public class TankStartMovingMsgCodecTest {
         
         MsgType msgType = MsgType.values()[buf.readInt()];
         
-        assertEquals(MsgType.TankStartMoving, msgType);
+        assertEquals(msgType, msgType);
         
         int length = buf.readInt();
         
@@ -67,7 +69,7 @@ public class TankStartMovingMsgCodecTest {
         channel.pipeline().addLast(new MsgDecoder());
         
         ByteBuf buf = Unpooled.buffer();
-        buf.writeInt(MsgType.TankStartMoving.ordinal());
+        buf.writeInt(msgType.ordinal());
         byte[] bytes = msg.toBytes();
         int length = bytes.length;
         

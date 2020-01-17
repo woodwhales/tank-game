@@ -17,6 +17,8 @@ import io.netty.channel.embedded.EmbeddedChannel;
 
 public class TankJoinMsgCodecTest {
 
+	private MsgType msgType = MsgType.TankJoin;
+	
     @Test
     public void testTankJoinMsgEncoder() {
     	UUID id = UUID.randomUUID();
@@ -37,7 +39,7 @@ public class TankJoinMsgCodecTest {
         
         MsgType msgType = MsgType.values()[buf.readInt()];
         
-        assertEquals(MsgType.TankJoin, msgType);
+        assertEquals(msgType, msgType);
         
         int length = buf.readInt();
         
@@ -76,7 +78,7 @@ public class TankJoinMsgCodecTest {
         channel.pipeline().addLast(new MsgDecoder());
         
         ByteBuf buf = Unpooled.buffer();
-        buf.writeInt(MsgType.TankJoin.ordinal());
+        buf.writeInt(msgType.ordinal());
         byte[] bytes = msg.toBytes();
         int length = bytes.length;
         
