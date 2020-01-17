@@ -33,7 +33,10 @@ public class MsgDecoder extends ByteToMessageDecoder {
         in.readBytes(bytes);
         
 		// 使用反射自动创建出BaseMsg对象
-        BaseMsg msg = (BaseMsg) Class.forName("org.woodwhales.tank.net.msg."+msgType.name()+"Msg")
+        BaseMsg msg = (BaseMsg) Class.forName(BaseMsg.class.getPackage().getName() 
+					        							+ "." 
+					    								+ msgType.name() 
+					    								+ "Msg")
         					.newInstance();
 
         /* 这种方式灵活性不如上述的反射机制好
