@@ -59,6 +59,7 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
     	log.info("server --> {}", msg);
+    	ServerFrame.INSTANCE.updateClientMsg(msg.toString());
         Server.clients.writeAndFlush(msg);
     }
 

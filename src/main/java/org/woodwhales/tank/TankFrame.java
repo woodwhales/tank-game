@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.woodwhales.tank.net.Client;
 import org.woodwhales.tank.net.msg.TankStartMovingMsg;
+import org.woodwhales.tank.net.msg.TankStopMsg;
 
 public class TankFrame extends Frame {
 	
@@ -160,19 +161,29 @@ public class TankFrame extends Frame {
 		
 		// 根据键盘的按键情况，改变方向
 		private void setMainTankDir() {
+			
+			// 当前坦克创建有按方向键
 			if(bL || bU || bR || bD) {
-				myTank.setMoving(true);
 				
+				// 改变tank的方向
 				if(bL) myTank.setDir(Dir.LEFT);
 				if(bU) myTank.setDir(Dir.UP);
 				if(bR) myTank.setDir(Dir.RIGHT);
 				if(bD) myTank.setDir(Dir.DOWN);
 				
-				Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
+				// tank原来是静止的状态，此时方向改变，需要发出tank移动消息
+				if(!myTank.isMoving()) {
+					Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
+				} 
+
+				myTank.setMoving(true);
 				return;
 			}
 			
+			// 没有按任何方向键位，则表示tank停止移动
 			myTank.setMoving(false);
+			Client.INSTANCE.send(new TankStopMsg(getMainTank()));
+
 		}
 	}
 
