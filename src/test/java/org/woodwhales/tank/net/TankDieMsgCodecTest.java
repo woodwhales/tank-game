@@ -19,9 +19,10 @@ public class TankDieMsgCodecTest {
 	
     @Test
     public void testTankDieMsgEncoder() {
+    	UUID bulletId = UUID.randomUUID();
     	UUID id = UUID.randomUUID();
     	
-    	TankDieMsg tank = new TankDieMsg(id);
+    	TankDieMsg tank = new TankDieMsg(bulletId, id);
     	
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new MsgEncoder());
@@ -36,10 +37,12 @@ public class TankDieMsgCodecTest {
         
         int length = buf.readInt();
         
-        assertEquals(16, length);
+        assertEquals(32, length);
         
+        UUID bullet_uuid = new UUID(buf.readLong(), buf.readLong()); // 16 字节
         UUID uuid = new UUID(buf.readLong(), buf.readLong()); // 16 字节
         
+        assertEquals(bulletId, bullet_uuid);
         assertEquals(id, uuid);
     
         buf.release();
@@ -48,9 +51,10 @@ public class TankDieMsgCodecTest {
 
     @Test
     public void testTankDieMsgDecoder() {
+    	UUID bulletId = UUID.randomUUID();
     	UUID id = UUID.randomUUID();
     	
-    	TankDieMsg msg = new TankDieMsg(id);
+    	TankDieMsg msg = new TankDieMsg(bulletId, id);
 
         EmbeddedChannel channel = new EmbeddedChannel();
         channel.pipeline().addLast(new MsgDecoder());
@@ -67,6 +71,7 @@ public class TankDieMsgCodecTest {
         TankDieMsg tankDieMsg = (TankDieMsg)channel.readInbound();
         
         assertEquals(id, tankDieMsg.getId());
+        assertEquals(bulletId, tankDieMsg.getBulletId());
 
     }
 }

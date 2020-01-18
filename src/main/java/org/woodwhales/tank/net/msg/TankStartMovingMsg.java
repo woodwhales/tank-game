@@ -43,7 +43,7 @@ public class TankStartMovingMsg extends BaseMsg {
 			return;
 		}
 
-		Tank tank = TankFrame.INSTANCE.findByUUID(this.id);
+		Tank tank = TankFrame.INSTANCE.findTankByUUID(this.id);
 		if (Objects.nonNull(tank)) {
 			tank.setMoving(true);
 			tank.setX(this.x);

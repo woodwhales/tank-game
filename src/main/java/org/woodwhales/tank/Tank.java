@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.UUID;
 
+import org.woodwhales.tank.net.Client;
+import org.woodwhales.tank.net.msg.BulletNewMsg;
 import org.woodwhales.tank.net.msg.TankJoinMsg;
 
 import lombok.Data;
@@ -64,16 +66,20 @@ public class Tank {
 	}
 
 	public void paint(Graphics g) {
-		if(!living) {
-			frame.tanks.remove(this);
-			return;
-		}
-		
 		Color color = g.getColor();
 		g.setColor(Color.YELLOW);
-		g.drawString(id.toString(), this.x, this.y - 10);
+		g.drawString("live = " + living, this.x, this.y - 10);
+		g.drawString(id.toString(), this.x, this.y - 20);
 		g.setColor(color);
 		
+		if(!living) {
+			moving = false;
+			Color colors = g.getColor();
+			g.setColor(Color.WHITE);
+			g.setColor(colors);
+			return;
+		}
+
 		switch (dir) {
 		case LEFT:
 			g.drawImage(getTankL(), x, y, null);
@@ -155,20 +161,20 @@ public class Tank {
 	}
 
 	private void boundsCheck() {
-		if(this.x < 0) {
-			this.x = 0;
+		if(this.x < 2) {
+			this.x = 2;
 		}
 		
-		if(this.x > TankFrame.GAME_WIDTH - Tank.WIDTH) {
-			this.x = TankFrame.GAME_WIDTH - Tank.WIDTH;
+		if(this.x > TankFrame.GAME_WIDTH - Tank.WIDTH - 2) {
+			this.x = TankFrame.GAME_WIDTH - Tank.WIDTH - 2;
 		}
 		
-		if(this.y < 25) {
-			this.y = 25;
+		if(this.y < 28) {
+			this.y = 28;
 		}
 		
-		if(this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT) {
-			this.y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
+		if(this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2) {
+			this.y = TankFrame.GAME_HEIGHT - Tank.HEIGHT - 2;
 		}
 	}
 
@@ -183,11 +189,18 @@ public class Tank {
 		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
 		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 		
-		this.frame.bullets.add(new Bullet(bX, bY, this.dir, this.group, frame));
+		Bullet bullet = new Bullet(id, bX, bY, this.dir, this.group, frame);
+		this.frame.bullets.add(bullet);
+		Client.INSTANCE.send(new BulletNewMsg(bullet));
 	}
 
 	public void die() {
 		this.living = false;
+		
+		int eX = this.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
+		int eY = this.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
+		TankFrame.INSTANCE.explodes.add(new Explode(eX, eY));
+		
 	}
 
 }

@@ -9,9 +9,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -38,6 +40,10 @@ public class TankFrame extends Frame {
 	
 	public void addTank(Tank tank) {
 		this.tanks.put(tank.getId(), tank);
+	}
+	
+	public void addBullet(Bullet bullet) {
+		this.bullets.add(bullet);
 	}
 	
 	public void removeTank(Tank tank) {
@@ -87,6 +93,7 @@ public class TankFrame extends Frame {
 		g.drawString("bullets size = " + bullets.size() ,10, 50);
 		g.drawString("enemies size = " + tanks.size() ,10, 60);
 		g.drawString("explodes size = " + explodes.size() ,10, 70);
+		g.drawString("tanks size = " + tanks.size() ,10, 80);
 		g.setColor(color);
 		
 		myTank.paint(g);
@@ -101,9 +108,10 @@ public class TankFrame extends Frame {
 			explodes.get(i).paint(g);
 		}
 		
+		Collection<Tank> values = tanks.values();
 		for (int i = 0; i < bullets.size(); i++) {
-			for (int j = 0; j < tanks.size(); j++) {
-				bullets.get(i).collideWith(tanks.get(j));
+			for (Tank tank : values) {
+				bullets.get(i).collideWith(tank);
 			}
 		}
 		
@@ -124,19 +132,22 @@ public class TankFrame extends Frame {
 			switch (keyCode) {
 				case KeyEvent.VK_LEFT:
 					bL = true;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_UP:
 					bU = true;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_RIGHT:
 					bR = true;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_DOWN:
 					bD = true;
+					setMainTankDir();
 					break;
 			}
 			
-			setMainTankDir();
 		}
 		
 		@Override
@@ -146,22 +157,25 @@ public class TankFrame extends Frame {
 			switch (keyCode) {
 				case KeyEvent.VK_LEFT:
 					bL = false;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_UP:
 					bU = false;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_RIGHT:
 					bR = false;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_DOWN:
 					bD = false;
+					setMainTankDir();
 					break;
 				case KeyEvent.VK_SPACE:
 					myTank.fire();
 					break;
 			}
 			
-			setMainTankDir();
 		}
 		
 		// 根据键盘的按键情况，改变方向
@@ -202,8 +216,20 @@ public class TankFrame extends Frame {
 		return myTank;
 	}
 
-	public Tank findByUUID(UUID id) {
+	public Tank findTankByUUID(UUID id) {
 		return tanks.get(id);
+	}
+	
+	public Bullet findBulletByUUID(UUID id) {
+		if(Objects.nonNull(bullets) && bullets.size() > 0) {
+			for (Bullet bullet : bullets) {
+				if(bullet.getId().equals(id)) {
+					return bullet;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 }

@@ -9,7 +9,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.woodwhales.tank.Bullet;
-import org.woodwhales.tank.Tank;
+import org.woodwhales.tank.Dir;
+import org.woodwhales.tank.Group;
 import org.woodwhales.tank.TankFrame;
 import org.woodwhales.tank.net.MsgType;
 
@@ -21,38 +22,27 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
-public class TankDieMsg extends BaseMsg {
-
-	private UUID bulletId;
+@EqualsAndHashCode(callSuper = false)
+public class BulletNewMsg extends BaseMsg {
+	
+	private UUID playerID;
 	private UUID id;
+	private Dir dir;
+	private int x, y;
+	private Group group;
+	
+	public BulletNewMsg(Bullet bullet) {
+		this.playerID = TankFrame.INSTANCE.getMainTank().getId();
+        this.x = bullet.getX();
+        this.y = bullet.getY();
+        this.dir = bullet.getDir();
+        this.group = bullet.getGroup();
+        this.id = bullet.getId();
+    }
 	
 	@Override
-	public void handle() {
-		Bullet bullet = TankFrame.INSTANCE.findBulletByUUID(this.bulletId);
-		
-		if(Objects.nonNull(bullet)) {
-			bullet.die();
-		}
-		
-		if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId())) {
-			TankFrame.INSTANCE.getMainTank().die();
-			// 当前tank被击中，退出当前客户端
-			System.exit(0);
-		} else {
-			Tank tank = TankFrame.INSTANCE.findTankByUUID(this.id);
-			
-			if (Objects.nonNull(tank)) {
-				tank.die();
-				TankFrame.INSTANCE.removeTank(tank);
-			}
-		}
-		
-	}
-	
-	@Override
-	public byte[] toBytes() {
-		ByteArrayOutputStream byteArrayOutputStream = null;
+    public byte[] toBytes() {
+    	ByteArrayOutputStream byteArrayOutputStream = null;
     	DataOutputStream dataOutputStream = null;
     	byte[] bytes = null;
     	
@@ -60,11 +50,14 @@ public class TankDieMsg extends BaseMsg {
 			byteArrayOutputStream = new ByteArrayOutputStream();
 			dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 			
-			dataOutputStream.writeLong(bulletId.getMostSignificantBits());
-			dataOutputStream.writeLong(bulletId.getLeastSignificantBits());
+			dataOutputStream.writeLong(playerID.getMostSignificantBits());
+			dataOutputStream.writeLong(playerID.getLeastSignificantBits());
+			dataOutputStream.writeInt(x);
+			dataOutputStream.writeInt(y);
+			dataOutputStream.writeInt(dir.ordinal());
+			dataOutputStream.writeInt(group.ordinal());
 			dataOutputStream.writeLong(id.getMostSignificantBits());
 			dataOutputStream.writeLong(id.getLeastSignificantBits());
-			
 			dataOutputStream.flush();
 			bytes = byteArrayOutputStream.toByteArray();
 		} catch (Exception exception) {
@@ -89,6 +82,17 @@ public class TankDieMsg extends BaseMsg {
 		}
     	
     	return bytes;
+    }
+    
+	@Override
+	public void handle() {
+		if(this.playerID.equals(TankFrame.INSTANCE.getMainTank().getId())) {
+			return;
+		}
+		
+		Bullet bullet = new Bullet(this.playerID, x, y, dir, group, TankFrame.INSTANCE);
+		bullet.setId(id);
+		TankFrame.INSTANCE.addBullet(bullet);
 	}
 
 	@Override
@@ -96,7 +100,11 @@ public class TankDieMsg extends BaseMsg {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 		
 		try {
-			this.bulletId = new UUID(dis.readLong(), dis.readLong());
+			this.playerID = new UUID(dis.readLong(), dis.readLong());
+			this.x = dis.readInt();
+			this.y = dis.readInt();
+			this.dir = Dir.values()[dis.readInt()];
+			this.group = Group.values()[dis.readInt()];
 			this.id = new UUID(dis.readLong(), dis.readLong());
 		} catch (IOException exception) {
 			exception.printStackTrace();
@@ -112,6 +120,6 @@ public class TankDieMsg extends BaseMsg {
 
 	@Override
 	public MsgType getMsgType() {
-		return MsgType.TankDie;
+		return MsgType.BulletNew;
 	}
 }

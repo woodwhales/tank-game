@@ -2,6 +2,10 @@ package org.woodwhales.tank;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.UUID;
+
+import org.woodwhales.tank.net.Client;
+import org.woodwhales.tank.net.msg.TankDieMsg;
 
 import lombok.Data;
 
@@ -23,13 +27,18 @@ public class Bullet {
 	private boolean living = true;
 	
 	private Group group = Group.BAD;
+	
+	private UUID id = UUID.randomUUID();
+	
+	private UUID playerId;
 
-	public Bullet(int x, int y, Dir dir, Group group, TankFrame frame) {
+	public Bullet(UUID playerId, int x, int y, Dir dir, Group group, TankFrame frame) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
 		this.frame = frame;
+		this.playerId = playerId;
 		this.rectangle = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 	}
 
@@ -86,24 +95,21 @@ public class Bullet {
 	 * @param tank
 	 */
 	public void collideWith(Tank tank) {
-		if(this.group == tank.getGroup()) {
+		if(this.playerId.equals(tank.getId())) {
 			return;
 		}
 		
 		int tankX = tank.getX();
 		int tankY = tank.getY();
 		
-		if(this.rectangle.intersects(tank.getRectangle())) {
+		if(this.isLiving() && tank.isLiving() && this.rectangle.intersects(tank.getRectangle())) {
 			tank.die();
 			this.die();
-			
-			int eX = tankX + Tank.WIDTH/2 - Explode.WIDTH/2;
-			int eY = tankY + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-			this.frame.explodes.add(new Explode(eX, eY, frame));
+			Client.INSTANCE.send(new TankDieMsg(this.id, tank.getId()));
 		}
 	}
 
-	private void die() {
+	public void die() {
 		this.living = false;
 	}
 
