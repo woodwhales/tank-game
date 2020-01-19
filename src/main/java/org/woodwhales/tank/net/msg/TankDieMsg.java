@@ -38,7 +38,8 @@ public class TankDieMsg extends BaseMsg {
 		if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId())) {
 			TankFrame.INSTANCE.getMainTank().die();
 			// 当前tank被击中，退出当前客户端
-			System.exit(0);
+			
+			TankFrame.INSTANCE.gameOver();
 		} else {
 			Tank tank = TankFrame.INSTANCE.findTankByUUID(this.id);
 			

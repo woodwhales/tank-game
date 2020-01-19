@@ -1,6 +1,8 @@
 package org.woodwhales.tank;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -33,6 +35,8 @@ public class TankFrame extends Frame {
 	List<Explode> explodes = new ArrayList<>();
 
 	Random random = new Random();
+	
+	private boolean gameOver = false;
 
 	private Tank myTank = new Tank(random.nextInt(GAME_WIDTH-Tank.WIDTH), random.nextInt(GAME_HEIGHT-Tank.HEIGHT), Dir.RIGHT, Group.GOOD, this);
 
@@ -96,6 +100,21 @@ public class TankFrame extends Frame {
 		g.drawString("tanks size = " + tanks.size() ,10, 80);
 		g.setColor(color);
 		
+		if(this.gameOver) {
+			g.setColor(Color.WHITE);
+			Font font = g.getFont();
+			Font fonts = new Font("Tahoma", Font.BOLD, 36);
+			g.setFont(fonts);
+			String gameOverNotice = "YOUR GAME OVER!";
+			
+			FontMetrics fontMetrics = g.getFontMetrics(fonts);
+			int fontHeight = fontMetrics.getHeight();
+			int fontWidth = fontMetrics.stringWidth(gameOverNotice);
+			g.drawString(gameOverNotice , GAME_WIDTH / 2 - (fontWidth / 2), GAME_HEIGHT / 2 + (fontHeight / 2));
+			g.setFont(font);
+			g.setColor(color);
+		}
+		
 		myTank.paint(g);
 		
 		this.tanks.values().stream().forEach(tank -> tank.paint(g));
@@ -128,8 +147,8 @@ public class TankFrame extends Frame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();
-			
-			switch (keyCode) {
+			if (!gameOver) {
+				switch (keyCode) {
 				case KeyEvent.VK_LEFT:
 					bL = true;
 					setMainTankDir();
@@ -146,15 +165,15 @@ public class TankFrame extends Frame {
 					bD = true;
 					setMainTankDir();
 					break;
+				}
 			}
-			
 		}
 		
 		@Override
 		public void keyReleased(KeyEvent e) {
 			int keyCode = e.getKeyCode();
-			
-			switch (keyCode) {
+			if (!gameOver) {
+				switch (keyCode) {
 				case KeyEvent.VK_LEFT:
 					bL = false;
 					setMainTankDir();
@@ -172,8 +191,11 @@ public class TankFrame extends Frame {
 					setMainTankDir();
 					break;
 				case KeyEvent.VK_SPACE:
+
 					myTank.fire();
+
 					break;
+				}
 			}
 			
 		}
@@ -230,6 +252,10 @@ public class TankFrame extends Frame {
 		}
 		
 		return null;
+	}
+
+	public void gameOver() {
+		this.gameOver = true;
 	}
 
 }

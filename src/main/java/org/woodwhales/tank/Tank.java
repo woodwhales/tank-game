@@ -76,6 +76,7 @@ public class Tank {
 			moving = false;
 			Color colors = g.getColor();
 			g.setColor(Color.WHITE);
+			g.drawRect(x, y, WIDTH, HEIGHT);
 			g.setColor(colors);
 			return;
 		}
