@@ -100,24 +100,13 @@ public class TankFrame extends Frame {
 		g.drawString("tanks size = " + tanks.size() ,10, 80);
 		g.setColor(color);
 		
-		if(this.gameOver) {
-			g.setColor(Color.WHITE);
-			Font font = g.getFont();
-			Font fonts = new Font("Tahoma", Font.BOLD, 36);
-			g.setFont(fonts);
-			String gameOverNotice = "YOUR GAME OVER!";
-			
-			FontMetrics fontMetrics = g.getFontMetrics(fonts);
-			int fontHeight = fontMetrics.getHeight();
-			int fontWidth = fontMetrics.stringWidth(gameOverNotice);
-			g.drawString(gameOverNotice , GAME_WIDTH / 2 - (fontWidth / 2), GAME_HEIGHT / 2 + (fontHeight / 2));
-			g.setFont(font);
-			g.setColor(color);
-		}
-		
 		myTank.paint(g);
 		
 		this.tanks.values().stream().forEach(tank -> tank.paint(g));
+		
+		if(this.gameOver) {
+			drawGameOver(g);
+		}
 		
 		for(int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).paint(g);
@@ -136,6 +125,22 @@ public class TankFrame extends Frame {
 		
 	}
 
+	private void drawGameOver(Graphics g) {
+		Color color = g.getColor();
+		g.setColor(Color.WHITE);
+		Font font = g.getFont();
+		Font fonts = new Font("Tahoma", Font.BOLD, 36);
+		g.setFont(fonts);
+		String gameOverNotice = "YOUR GAME OVER!";
+		
+		FontMetrics fontMetrics = g.getFontMetrics(fonts);
+		int fontHeight = fontMetrics.getHeight();
+		int fontWidth = fontMetrics.stringWidth(gameOverNotice);
+		g.drawString(gameOverNotice , GAME_WIDTH / 2 - (fontWidth / 2), GAME_HEIGHT / 2 + (fontHeight / 2));
+		g.setFont(font);
+		g.setColor(color);
+	}
+	
 	class MyKeyListener extends KeyAdapter {
 		
 		// 使用标识变量记录键盘按键的情况，之后再计算方块应该移动的方向

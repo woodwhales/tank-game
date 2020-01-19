@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.woodwhales.tank.net.msg.MsgDecoder;
 import org.woodwhales.tank.net.msg.MsgEncoder;
+import org.woodwhales.tank.net.msg.TankDieMsg;
 import org.woodwhales.tank.net.msg.TankJoinMsg;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -79,14 +80,23 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
     		
     		UUID tankId = Server.maps.get(tankJoinMsg.getId());
     		if(Objects.isNull(tankId)) {
-    			tankId = UUID.randomUUID();
-    			tankJoinMsg.setId(tankId);
-    			ServerFrame.INSTANCE.updateClientMsg("grant this tank id => "+ tankId);
-    			ServerFrame.INSTANCE.updateClientMsg("Server.maps.size = "+ Server.maps.size());
+    			tankId = tankJoinMsg.getId();
     			Server.maps.put(tankId, tankId);
-    			log.info("grant this tank id => {}", tankId);
+    			log.info("put new tank to maps => tankId = {}", tankId);
+    			ServerFrame.INSTANCE.updateClientMsg("Server.maps.size = "+ Server.maps.size());
     		}
+    		
     	}
+
+    	if(msg instanceof TankDieMsg) {
+    		TankDieMsg tankDieMsg = (TankDieMsg)msg;
+    		UUID tankId = Server.maps.get(tankDieMsg.getId());
+    		if(Objects.nonNull(tankId)) {
+    			Server.maps.remove(tankId);
+    			log.info("delete tank to maps => tankId = {}", tankId);
+    			ServerFrame.INSTANCE.updateClientMsg("Server.maps.size = "+ Server.maps.size());
+    		}
+		}
     	
     	ServerFrame.INSTANCE.updateClientMsg(msg.toString());
         Server.clients.writeAndFlush(msg);
