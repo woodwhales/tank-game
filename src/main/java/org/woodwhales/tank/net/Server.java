@@ -1,7 +1,11 @@
 package org.woodwhales.tank.net;
 
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
+import org.woodwhales.tank.net.msg.MsgDecoder;
+import org.woodwhales.tank.net.msg.MsgEncoder;
 import org.woodwhales.tank.net.msg.TankJoinMsg;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -21,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 
 public class Server {
     public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    
+    public static HashMap<UUID, UUID> maps = new HashMap<>();
 
     public void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -36,6 +42,8 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
+                            	.addLast(new MsgDecoder())
+                            	.addLast(new MsgEncoder())
                                 .addLast(new ServerChildHandler());
                         }
                     })
@@ -68,8 +76,16 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
     	
     	if(msg instanceof TankJoinMsg) {
     		TankJoinMsg tankJoinMsg = (TankJoinMsg)msg;
-    		UUID id = tankJoinMsg.getId();
-    		log.info("id => {}", id);
+    		
+    		UUID tankId = Server.maps.get(tankJoinMsg.getId());
+    		if(Objects.isNull(tankId)) {
+    			tankId = UUID.randomUUID();
+    			tankJoinMsg.setId(tankId);
+    			ServerFrame.INSTANCE.updateClientMsg("grant this tank id => "+ tankId);
+    			ServerFrame.INSTANCE.updateClientMsg("Server.maps.size = "+ Server.maps.size());
+    			Server.maps.put(tankId, tankId);
+    			log.info("grant this tank id => {}", tankId);
+    		}
     	}
     	
     	ServerFrame.INSTANCE.updateClientMsg(msg.toString());
