@@ -1,10 +1,15 @@
 package org.woodwhales.tank.net;
 
+import java.util.UUID;
+
+import org.woodwhales.tank.net.msg.TankJoinMsg;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
@@ -23,6 +28,7 @@ public class Server {
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.option(ChannelOption.TCP_NODELAY, false);
 
             ChannelFuture future = bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
@@ -59,6 +65,13 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
     	log.info("server --> {}", msg);
+    	
+    	if(msg instanceof TankJoinMsg) {
+    		TankJoinMsg tankJoinMsg = (TankJoinMsg)msg;
+    		UUID id = tankJoinMsg.getId();
+    		log.info("id => {}", id);
+    	}
+    	
     	ServerFrame.INSTANCE.updateClientMsg(msg.toString());
         Server.clients.writeAndFlush(msg);
     }
